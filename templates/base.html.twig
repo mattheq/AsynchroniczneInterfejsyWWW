@@ -6,7 +6,10 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <div id="root"></div>
+            <script type="text/javascript" src="{{ asset('build/js/app.js') }}"></script>
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
