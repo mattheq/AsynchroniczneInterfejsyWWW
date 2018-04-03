@@ -1,19 +1,17 @@
 import React from 'react';
+
+import {Container} from 'semantic-ui-react';
+
 import Navbar from "./Navbar";
 
 class BaseLayout extends React.Component {
     render() {
         return (
-            <div>
+            <Container>
                 <Navbar/>
-                <div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            {this.props.children}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <br/>
+                {this.props.children}
+            </Container>
         );
     }
 }
