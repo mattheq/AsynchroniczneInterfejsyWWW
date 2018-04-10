@@ -21,6 +21,11 @@ Encore
     // .autoProvidejQuery()
 
     .enableReactPreset()
+
+    .configureBabel(function(babelConfig) {
+        babelConfig.plugins = ["transform-object-rest-spread", "transform-class-properties"]
+    })
+
     .addEntry('js/app', './assets/js/app.js')
 ;
 
