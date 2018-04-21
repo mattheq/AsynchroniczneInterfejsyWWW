@@ -46,12 +46,12 @@ class Registration extends React.Component {
                 <Segment className="four wide column">
                     <Formik
                         initialValues={{
-                            firstname: 'a',
-                            lastname: 'a',
-                            email: 'a@a.pl',
-                            phone_number: '123456789',
-                            password: '123456789',
-                            password_repeat: '123456789',
+                            firstname: '',
+                            lastname: '',
+                            email: '',
+                            phone_number: '',
+                            password: '',
+                            password_repeat: '',
                         }}
 
                         onSubmit={(values, { setSubmitting }) => {
