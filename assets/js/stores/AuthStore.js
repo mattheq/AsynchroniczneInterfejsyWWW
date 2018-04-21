@@ -19,7 +19,20 @@ class AuthStore extends EventEmitter {
     }
 
     loginUser(data) {
-        // TODO: make react login user
+        axios.post('/api/v1/auth/login_check', qs.stringify(data), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then((response) => {
+            if (response.data.token) {
+                this.emit(AuthConstants.USER_LOGIN_SUCCESS, response.data.token);
+                //TODO: add default barer header
+            } else {
+                this.emit(AuthConstants.USER_LOGIN_FAILED, 'Something went wrong, please try again.');
+            }
+        }).catch((error) => {
+            this.emit(AuthConstants.USER_LOGIN_FAILED, error.response.data.message);
+        })
     }
 
     handleActions(action) {
