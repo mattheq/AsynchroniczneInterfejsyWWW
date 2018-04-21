@@ -1,4 +1,5 @@
 import React from 'react';
+import AuthHelper from '../../helpers/AuthHelper';
 import {Link} from 'react-router-dom';
 import {Menu} from 'semantic-ui-react';
 
@@ -20,10 +21,16 @@ class Navbar extends React.Component {
         return (
                 <Menu secondary>
                     <Menu.Item as={Link} to={"/"} name={"home"} active={this.state.activeItem === 'home'} onClick={this.handleItemClick} />
-                    <Menu.Menu position={"right"}>
-                        <Menu.Item as={Link} to={"login"} name={"login"} active={this.state.activeItem === 'login'} onClick={this.handleItemClick} />
-                        <Menu.Item as={Link} to={"signup"} name={"signup"} active={this.state.activeItem === 'signup'} onClick={this.handleItemClick} />
-                    </Menu.Menu>
+                    {AuthHelper.isLoggedIn() ? (
+                        <Menu.Menu position={"right"}>
+                            <Menu.Item as={Link} to={"logout"} name={"logout"} />
+                        </Menu.Menu>
+                    ) : (
+                        <Menu.Menu position={"right"}>
+                            <Menu.Item as={Link} to={"login"} name={"login"} active={this.state.activeItem === 'login'} onClick={this.handleItemClick} />
+                            <Menu.Item as={Link} to={"signup"} name={"signup"} active={this.state.activeItem === 'signup'} onClick={this.handleItemClick} />
+                        </Menu.Menu>
+                    )}
                 </Menu>
         )
     }

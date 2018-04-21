@@ -52,6 +52,11 @@ class AuthHelper {
         return this.get(AuthConstants.USER_INFO_KEY);
     }
 
+    logoutUser() {
+        this.clearToken();
+        this.clearCredentials();
+    }
+
     isLoggedIn() {
         if(this.getToken() !== null) {
             // TODO: check if token expired

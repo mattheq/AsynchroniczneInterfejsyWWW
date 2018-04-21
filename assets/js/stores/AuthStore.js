@@ -33,6 +33,8 @@ class AuthStore extends EventEmitter {
         }).catch((error) => {
             this.emit(AuthConstants.USER_LOGIN_FAILED, error.response.data.message);
         })
+    logoutUser() {
+        AuthHelper.logoutUser();
     }
 
     handleActions(action) {
@@ -44,6 +46,11 @@ class AuthStore extends EventEmitter {
 
             case AuthConstants.USER_LOGIN: {
                 this.loginUser(action.data);
+                break;
+            }
+
+            case AuthConstants.USER_LOGOUT: {
+                this.logoutUser();
                 break;
             }
         }

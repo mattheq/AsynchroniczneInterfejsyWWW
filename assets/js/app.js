@@ -7,6 +7,7 @@ import 'semantic-ui-css/semantic.min.css';
 import BaseLayout from './components/Layout/BaseLayout';
 import HomePage from './components/HomePage/HomePage';
 import Login from './components/Login/Login';
+import Logout from './components/Logout/Logout';
 import Registration from './components/Registration/Registration';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AuthHelper from './helpers/AuthHelper';
@@ -21,6 +22,7 @@ ReactDOM.render(
             <Route exact path="/" component={HomePage}/>
             <Route path="/login" component={Login}/>
             <Route path="/signup" component={Registration}/>
+            <PrivateRoute path="/logout" component={Logout}/>
         </div>
     </HashRouter>,
     root);

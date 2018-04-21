@@ -14,3 +14,9 @@ export function userRegister(data) {
         data,
     });
 }
+
+export function userLogout() {
+    dispatcher.dispatch({
+        type: AuthConstants.USER_LOGOUT,
+    })
+}
