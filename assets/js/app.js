@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {Route, HashRouter, Redirect} from 'react-router-dom';
 
 import 'semantic-ui-css/semantic.min.css';
+import '../css/custom.css';
 
 import BaseLayout from './components/Layout/BaseLayout';
 import HomePage from './components/HomePage/HomePage';

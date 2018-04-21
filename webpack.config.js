@@ -27,6 +27,7 @@ Encore
     })
 
     .addEntry('js/app', './assets/js/app.js')
+    .addStyleEntry('css/custom', './assets/css/custom.css')
 ;
 
 module.exports = Encore.getWebpackConfig();

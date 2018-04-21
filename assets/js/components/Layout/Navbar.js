@@ -1,7 +1,9 @@
 import React from 'react';
 import AuthHelper from '../../helpers/AuthHelper';
 import {Link} from 'react-router-dom';
-import {Menu} from 'semantic-ui-react';
+import {Menu, Segment} from 'semantic-ui-react';
+import LoginModal from '../Login/LoginModal';
+import RegistrationModal from '../Registration/RegistrationModal';
 
 class Navbar extends React.Component {
     // TODO: set 'active' class based on route
@@ -19,7 +21,8 @@ class Navbar extends React.Component {
 
     render() {
         return (
-                <Menu secondary>
+            <Segment inverted attached='top'>
+                <Menu secondary inverted>
                     <Menu.Item as={Link} to={"/"} name={"home"} active={this.state.activeItem === 'home'} onClick={this.handleItemClick} />
                     {AuthHelper.isLoggedIn() ? (
                         <Menu.Menu position={"right"}>
@@ -27,13 +30,18 @@ class Navbar extends React.Component {
                         </Menu.Menu>
                     ) : (
                         <Menu.Menu position={"right"}>
-                            <Menu.Item as={Link} to={"login"} name={"login"} active={this.state.activeItem === 'login'} onClick={this.handleItemClick} />
-                            <Menu.Item as={Link} to={"signup"} name={"signup"} active={this.state.activeItem === 'signup'} onClick={this.handleItemClick} />
+                            <Menu.Item>
+                                <LoginModal/>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <RegistrationModal/>
+                            </Menu.Item>
                         </Menu.Menu>
                     )}
                 </Menu>
+            </Segment>
         )
     }
 }
 
-export default Navbar
+export default Navbar;

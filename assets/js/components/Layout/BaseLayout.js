@@ -7,11 +7,13 @@ import Navbar from "./Navbar";
 class BaseLayout extends React.Component {
     render() {
         return (
-            <Container>
+            <div>
                 <Navbar/>
                 <br/>
-                {this.props.children}
-            </Container>
+                <Container>
+                    {this.props.children}
+                </Container>
+            </div>
         );
     }
 }
