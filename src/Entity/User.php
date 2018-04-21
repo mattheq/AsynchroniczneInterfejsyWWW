@@ -1,5 +1,5 @@
 <?php
-
+//TODO: add firstname, lastname, phone_number to jwt payload
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="user")
- * @UniqueEntity("email")
+ * @UniqueEntity("email", message="This email is already used.")
  */
 class User implements UserInterface, \Serializable
 {
