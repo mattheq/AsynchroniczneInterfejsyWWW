@@ -3,6 +3,7 @@ import { Button, Segment, Container, Form } from 'semantic-ui-react';
 import AuthStore from '../../stores/AuthStore';
 import { Formik, Field } from 'formik';
 import Yup from 'yup';
+import {withRouter} from 'react-router-dom';
 import * as AuthActions from '../../actions/AuthActions';
 import * as AuthConstants from '../../constants/AuthConstants';
 
@@ -110,4 +111,4 @@ class Registration extends React.Component {
     }
 }
 
-export default Registration
+export default withRouter(Registration)

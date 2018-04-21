@@ -15,6 +15,13 @@ export function userRegister(data) {
     });
 }
 
+export function userRefreshToken(data) {
+    dispatcher.dispatch({
+        type: AuthConstants.USER_REFRESH_TOKEN,
+        data,
+    });
+}
+
 export function userLogout() {
     dispatcher.dispatch({
         type: AuthConstants.USER_LOGOUT,

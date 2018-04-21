@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Route, HashRouter} from 'react-router-dom';
+import {Route, HashRouter, Redirect} from 'react-router-dom';
 
 import 'semantic-ui-css/semantic.min.css';
 
@@ -14,15 +14,26 @@ import AuthHelper from './helpers/AuthHelper';
 
 const root = document.getElementById('root');
 
-// TODO: do not display login/signup if user is authenticated
 ReactDOM.render(
     <HashRouter>
         <div>
             <Route path="/" component={BaseLayout}/>
             <Route exact path="/" component={HomePage}/>
-            <Route path="/login" component={Login}/>
-            <Route path="/signup" component={Registration}/>
             <PrivateRoute path="/logout" component={Logout}/>
+            <Route path="/login" render={() => (
+                AuthHelper.isLoggedIn() ? (
+                    <Redirect to="/" />
+                ) : (
+                    <Login />
+                )
+            )}/>
+            <Route path="/signup" render={() => (
+                AuthHelper.isLoggedIn() ? (
+                    <Redirect to="/" />
+                ) : (
+                    <Registration />
+                )
+            )}/>
         </div>
     </HashRouter>,
     root);

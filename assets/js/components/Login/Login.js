@@ -6,6 +6,7 @@ import Yup from 'yup';
 import * as AuthActions from '../../actions/AuthActions';
 import * as AuthConstants from '../../constants/AuthConstants';
 import AuthHelper from '../../helpers/AuthHelper';
+import {withRouter} from 'react-router-dom';
 
 class Login extends React.Component {
 
@@ -30,8 +31,9 @@ class Login extends React.Component {
         AuthStore.removeListener(AuthConstants.USER_LOGIN_FAILED, this.handleLoginFailed);
     }
 
-    handleLoginSuccess(jwtToken) {
-        AuthHelper.setToken(jwtToken);
+    handleLoginSuccess(data) {
+        AuthHelper.setToken(data.jwtToken);
+        AuthHelper.setRefreshToken(data.refreshToken);
         this.props.history.push('/');
     }
 
@@ -90,4 +92,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login
+export default withRouter(Login)

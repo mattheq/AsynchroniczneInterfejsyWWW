@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import axios from 'axios';
+import AuthHelper from '../helpers/AuthHelper';
 import dispatcher from "../dispatcher";
 import qs from "qs";
 import * as AuthConstants from "../constants/AuthConstants";
@@ -24,17 +25,37 @@ class AuthStore extends EventEmitter {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then((response) => {
-            if (response.data.token) {
-                this.emit(AuthConstants.USER_LOGIN_SUCCESS, response.data.token);
+            if (response.data.token && response.data.refresh_token) {
+                this.emit(AuthConstants.USER_LOGIN_SUCCESS, {jwtToken: response.data.token, refreshToken: response.data.refresh_token});
                 //TODO: add default barer header
             } else {
                 this.emit(AuthConstants.USER_LOGIN_FAILED, 'Something went wrong, please try again.');
             }
         }).catch((error) => {
+            console.log(error);
             this.emit(AuthConstants.USER_LOGIN_FAILED, error.response.data.message);
-        })
+        });
+    }
+
     logoutUser() {
         AuthHelper.logoutUser();
+    }
+
+    refreshToken(refresh_token) {
+        axios.post('/api/v1/auth/refresh', qs.stringify(refresh_token), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then((response) => {
+            if (response.data.token && !AuthHelper.checkIfTokenExpired(response.data.token)) {
+                AuthHelper.setToken(response.data.token);
+                // TODO: set credentials
+            } else {
+                AuthHelper.logoutUser();
+            }
+        }).catch((error) => {
+            AuthHelper.logoutUser();
+        });
     }
 
     handleActions(action) {
@@ -46,6 +67,11 @@ class AuthStore extends EventEmitter {
 
             case AuthConstants.USER_LOGIN: {
                 this.loginUser(action.data);
+                break;
+            }
+
+            case AuthConstants.USER_REFRESH_TOKEN: {
+                this.refreshToken(action.data);
                 break;
             }
 
