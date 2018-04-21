@@ -8,9 +8,11 @@ import BaseLayout from './components/Layout/BaseLayout';
 import HomePage from './components/HomePage/HomePage';
 import Login from './components/Login/Login';
 import Registration from './components/Registration/Registration';
+import AuthHelper from './helpers/AuthHelper';
 
 const root = document.getElementById('root');
 
+// TODO: do not display login/signup if user is authenticated
 ReactDOM.render(
     <HashRouter>
         <div>
