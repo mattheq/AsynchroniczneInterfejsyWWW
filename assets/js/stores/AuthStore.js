@@ -32,7 +32,6 @@ class AuthStore extends EventEmitter {
                 this.emit(AuthConstants.USER_LOGIN_FAILED, 'Something went wrong, please try again.');
             }
         }).catch((error) => {
-            console.log(error);
             this.emit(AuthConstants.USER_LOGIN_FAILED, error.response.data.message);
         });
     }
