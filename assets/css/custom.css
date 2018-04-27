@@ -1,3 +1,34 @@
+/* MODAL CENTERED */
 .ui.page.modals.transition.visible {
     display: flex !important;
+}
+
+/* HOMEPAGE SEARCH */
+.homeSearchSection {
+    position: relative;
+    height: 52vh;
+    min-height: 476px;
+}
+
+.homeSearchBackground {
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+}
+
+.homeSearchBackground > img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+
+.homeSearchBar {
+    z-index: 10;
+    padding-top: 75px;
+}
+
+.homeSearchBar > div.ui.input {
+    width: 40%;
 }

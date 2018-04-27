@@ -6,6 +6,7 @@ import 'semantic-ui-css/semantic.min.css';
 import '../css/custom.css';
 
 import BaseLayout from './components/Layout/BaseLayout';
+import Footer from './components/Layout/Footer';
 import HomePage from './components/HomePage/HomePage';
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
@@ -20,6 +21,7 @@ ReactDOM.render(
         <div>
             <Route path="/" component={BaseLayout}/>
             <Route exact path="/" component={HomePage}/>
+            <Route path="/" component={Footer} />
             <PrivateRoute path="/logout" component={Logout}/>
             <Route path="/login" render={() => (
                 AuthHelper.isLoggedIn() ? (

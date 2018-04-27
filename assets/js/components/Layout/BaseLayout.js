@@ -9,8 +9,7 @@ class BaseLayout extends React.Component {
         return (
             <div>
                 <Navbar/>
-                <br/>
-                <Container>
+                <Container >
                     {this.props.children}
                 </Container>
             </div>
