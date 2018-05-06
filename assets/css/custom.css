@@ -6,7 +6,7 @@
 /* HOMEPAGE SEARCH */
 .homeSearchSection {
     position: relative;
-    height: 52vh;
+    height: 692px;
     min-height: 476px;
 }
 
@@ -26,7 +26,9 @@
 
 .homeSearchBar {
     z-index: 10;
+    bottom: 100px;
     padding-top: 75px;
+    padding-bottom: 75px;
 }
 
 .homeSearchBar > div.ui.input {

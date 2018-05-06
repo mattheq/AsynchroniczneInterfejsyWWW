@@ -21,7 +21,7 @@ class Navbar extends React.Component {
 
     render() {
         return (
-            <Segment inverted attached='top'>
+            <Segment inverted attached={"top"}>
                 <Menu secondary inverted>
                     <Menu.Item as={Link} to={"/"} name={"home"} active={this.state.activeItem === 'home'} onClick={this.handleItemClick} />
                     {AuthHelper.isLoggedIn() ? (
