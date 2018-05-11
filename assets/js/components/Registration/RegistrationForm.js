@@ -32,7 +32,7 @@ class RegistrationForm extends React.Component {
     }
 
     handleUserRegisterSuccess() {
-        this.props.history.push("/login");
+        this.props.history.push("/");
     }
 
     handleUserRegisterFailed(error) {
