@@ -2,10 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Asynchroniczne Interfejsy WWW{% endblock %}</title>
         {% block stylesheets %}
             {#TODO: move app.css from build/js to build/css driectory#}
             <link rel="stylesheet" href="{{ asset('build/js/app.css') }}" />
+            <link rel="icon" href="{{ asset('favicon.ico') }}" />
         {% endblock %}
     </head>
     <body>
