@@ -12,6 +12,7 @@ import Logout from './components/Logout/Logout';
 import Registration from './components/Registration/Registration';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AuthHelper from './helpers/AuthHelper';
+import Navbar from "./components/Layout/Navbar";
 
 const root = document.getElementById('root');
 

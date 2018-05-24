@@ -3,34 +3,42 @@
     display: flex !important;
 }
 
-/* HOMEPAGE SEARCH */
-.homeSearchSection {
-    position: relative;
-    height: 692px;
+.base-container {
+    height: 666px;
     min-height: 476px;
 }
 
-.homeSearchBackground {
+div.ui.container.base-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* HOMEPAGE SEARCH */
+.home-search-section {
+    position: relative;
+}
+
+.home-search-background {
     position: absolute;
     z-index: -1;
     height: 100%;
     width: 100%;
 }
 
-.homeSearchBackground > img {
+.home-search-background > img {
     object-fit: cover;
     height: 100%;
     width: 100%;
     display: block;
 }
 
-.homeSearchBar {
+.home-search-bar {
     z-index: 10;
     bottom: 100px;
     padding-top: 75px;
     padding-bottom: 75px;
 }
 
-.homeSearchBar > div.ui.input {
+.home-search-bar > div.ui.input {
     width: 40%;
 }
