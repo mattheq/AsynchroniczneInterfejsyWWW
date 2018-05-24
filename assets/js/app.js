@@ -5,7 +5,6 @@ import {Route, HashRouter, Redirect} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import '../css/custom.css';
 
-import BaseLayout from './components/Layout/BaseLayout';
 import Footer from './components/Layout/Footer';
 import HomePage from './components/HomePage/HomePage';
 import Login from './components/Login/Login';
@@ -19,9 +18,8 @@ const root = document.getElementById('root');
 ReactDOM.render(
     <HashRouter>
         <div>
-            <Route path="/" component={BaseLayout}/>
+            <Route path="/" component={Navbar} />
             <Route exact path="/" component={HomePage}/>
-            <Route path="/" component={Footer} />
             <PrivateRoute path="/logout" component={Logout}/>
             <Route path="/login" render={() => (
                 AuthHelper.isLoggedIn() ? (
@@ -37,6 +35,7 @@ ReactDOM.render(
                     <Registration />
                 )
             )}/>
+            <Route path="/" component={Footer} />
         </div>
     </HashRouter>,
     root);
