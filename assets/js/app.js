@@ -7,6 +7,7 @@ import '../css/custom.css';
 
 import Footer from './components/Layout/Footer';
 import HomePage from './components/HomePage/HomePage';
+import ItemForm from './components/Item/ItemForm';
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import Registration from './components/Registration/Registration';
@@ -21,6 +22,7 @@ ReactDOM.render(
         <div>
             <Route path="/" component={Navbar} />
             <Route exact path="/" component={HomePage}/>
+            <Route path="/items/add" component={ItemForm} />
             <PrivateRoute path="/logout" component={Logout}/>
             <Route path="/login" render={() => (
                 AuthHelper.isLoggedIn() ? (

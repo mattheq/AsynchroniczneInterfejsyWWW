@@ -2,9 +2,12 @@
 //TODO: add firstname, lastname, phone_number to jwt payload
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -12,6 +15,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="user")
  * @UniqueEntity("email", message="This email is already used.")
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ *     attributes={
+ *          "normalization_context"={"groups"={"user"}}
+ *     }
+ * )
  */
 class User implements UserInterface, \Serializable
 {
@@ -19,6 +29,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"item", "user"})
      */
     private $id;
 
@@ -26,6 +37,7 @@ class User implements UserInterface, \Serializable
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     * @Groups({"item", "user"})
      */
     private $firstname;
 
@@ -33,6 +45,7 @@ class User implements UserInterface, \Serializable
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     * @Groups({"item", "user"})
      */
     private $lastname;
 
@@ -41,12 +54,14 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
+     * @Groups({"item", "user"})
      */
     private $email;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"item", "user"})
      */
     private $phone_number;
 
@@ -85,12 +100,43 @@ class User implements UserInterface, \Serializable
     private $password_repeat;
 
     /**
+     * @var Item[]
+     * @ORM\OneToMany(targetEntity="Item", mappedBy="user")
+     */
+    private $items;
+
+    /**
      * User constructor.
      * @throws \Exception
      */
     public function __construct()
     {
         $this->setAuthKey(base64_encode(random_bytes(32)));
+        $this->items = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCreatedAt(): int
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUpdatedAt(): int
+    {
+        return $this->updated_at;
     }
 
     /**
@@ -260,4 +306,21 @@ class User implements UserInterface, \Serializable
     {
 
     }
+
+    /**
+     * @return Item[]
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param Item[] $items
+     */
+    public function setItems(array $items): void
+    {
+        $this->items = $items;
+    }
+
 }
