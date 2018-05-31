@@ -1,3 +1,14 @@
 export const ITEM_CREATE = "ITEM_CREATE";
 export const ITEM_CREATE_SUCCESS = "ITEM_CREATE_SUCCESS";
 export const ITEM_CREATE_FAILED = "ITEM_CREATE_FAILED";
+
+export const ITEM_VIEW = "ITEM_VIEW";
+export const ITEM_VIEW_SUCCESS = "ITEM_VIEW_SUCCESS";
+export const ITEM_VIEW_FAILED = "ITEM_VIEW_FAILED";
+
+export const ITEM_FETCH = "ITEM_FETCH";
+export const ITEM_FETCH_SUCCESS = "ITEM_FETCH_SUCCESS";
+export const ITEM_FETCH_FAILED = "ITEM_FETCH_FAILED";
+
+export const ITEM_MISSING = 0;
+export const ITEM_FOUND = 1;

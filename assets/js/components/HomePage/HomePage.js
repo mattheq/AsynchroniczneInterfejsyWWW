@@ -6,6 +6,23 @@ import homeBackground from '../../../images/home_background.jpg';
 
 /* TODO: change input to search bar with latest 10-20 items and category lost/found */
 class HomePage extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            redirectTo: '/items'
+        };
+
+        this.onKeyPress = this.onKeyPress.bind(this);
+    }
+
+    onKeyPress(e) {
+        if ('Enter' === e.key) {
+            this.props.history.push(this.state.redirectTo);
+        }
+    }
+
     render() {
         return (
             <section className={"home-search-section base-container"}>
@@ -14,12 +31,12 @@ class HomePage extends React.Component {
                 </div>
                     <Container className={"home-search-bar"} textAlign={"center"}>
                         <Header size={"huge"} inverted>What are you looking for?</Header>
-                        <Input icon={<Icon name="search" inverted circular link/>} placeholder="Search..." />
+                        <Input icon={<Icon name="search" inverted circular link onClick={() => this.props.history.push(this.state.redirectTo)}/>} placeholder="Search..." onKeyPress={(e) => this.onKeyPress(e)}/>
                         <Divider />
                         {AuthHelper.isLoggedIn() ? (
                         <Grid columns={1} textAlign={"center"} style={{marginTop: 0}}>
                             <div>
-                                <Label pointing={"right"} color={"red"}>Or maybe you have found something?</Label>
+                                <Label pointing={"right"} color={"red"}>Add new missing item</Label>
                                 <Button as={Link} to={"/items/add"} name={"createItem"} inverted color="grey">Add new</Button>
                             </div>
                         </Grid>

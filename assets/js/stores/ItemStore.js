@@ -11,14 +11,42 @@ class ItemStore extends EventEmitter {
         axios.post('/api/v1/items', qs.stringify(data), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
                 'Authorization': 'Bearer ' + AuthHelper.getToken()
             }
         }).then((response) => {
-            console.log(response);
-            this.emit(ItemConstants.ITEM_CREATE_SUCCESS);
+            this.emit(ItemConstants.ITEM_CREATE_SUCCESS, response.data);
+        }).catch((error) => {
+            this.emit(ItemConstants.ITEM_CREATE_FAILED, error.response.data.error);
+        });
+    }
+
+    viewItem(id) {
+        axios.get(`/api/v1/items/${id}`, null, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + AuthHelper.getToken()
+            }
+        }).then((response) => {
+            this.emit(ItemConstants.ITEM_VIEW_SUCCESS, response.data);
+        }).catch((error) => {
+            this.emit(ItemConstants.ITEM_VIEW_FAILED, error.response.data.error);
+        });
+    }
+
+    fetchItem(data) {
+        axios.get('/api/v1/items', {params: data}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + AuthHelper.getToken()
+            }
+        }).then((response) => {
+            this.emit(ItemConstants.ITEM_FETCH_SUCCESS, response.data);
         }).catch((error) => {
             console.log(error);
-            this.emit(ItemConstants.ITEM_CREATE_FAILED, error.response.data.error);
+            this.emit(ItemConstants.ITEM_FETCH_FAILED, error.response);
         });
     }
 
@@ -26,6 +54,16 @@ class ItemStore extends EventEmitter {
         switch (action.type) {
             case ItemConstants.ITEM_CREATE: {
                 this.createItem(action.data);
+                break;
+            }
+
+            case ItemConstants.ITEM_VIEW: {
+                this.viewItem(action.data);
+                break;
+            }
+
+            case ItemConstants.ITEM_FETCH: {
+                this.fetchItem(action.data);
                 break;
             }
         }

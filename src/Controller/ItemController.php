@@ -6,6 +6,7 @@ use App\Entity\Item;
 use App\Form\CreateItemType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -36,7 +37,7 @@ class ItemController extends Controller
 
             $entityManager->persist($item);
             $entityManager->flush();
-            return $this->successResponse();
+            return new JsonResponse($this->get('serializer')->serialize($item,'json'));
         }
 
         return $this->validationsErrorResponse($createItemForm);

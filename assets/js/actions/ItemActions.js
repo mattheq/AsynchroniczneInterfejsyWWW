@@ -7,6 +7,21 @@ export function itemCreate(data) {
         data,
     });
 }
+
+export function itemView(data) {
+    dispatcher.dispatch({
+        type: ItemConstants.ITEM_VIEW,
+        data
+    })
+}
+
+export function itemFetch(data = {}) {
+    dispatcher.dispatch({
+        type: ItemConstants.ITEM_FETCH,
+        data
+    })
+}
+
 //
 // export function itemDelete(data) {
 //     dispatcher.dispatch({

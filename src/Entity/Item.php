@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * TODO: Add item photo and address details
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
  * @ApiResource(
  *     attributes={
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *     },
  *     collectionOperations={
- *          "get",
+ *          "get"={"pagination_items_per_page"=12},
  *          "post"={
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
  *              "method"="POST",

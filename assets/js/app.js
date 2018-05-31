@@ -8,6 +8,8 @@ import '../css/custom.css';
 import Footer from './components/Layout/Footer';
 import HomePage from './components/HomePage/HomePage';
 import ItemForm from './components/Item/ItemForm';
+import ItemList from './components/Item/ItemList';
+import ItemView from './components/Item/ItemView';
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import Registration from './components/Registration/Registration';
@@ -22,7 +24,9 @@ ReactDOM.render(
         <div>
             <Route path="/" component={Navbar} />
             <Route exact path="/" component={HomePage}/>
+            <Route path="/items/view/:id" component={ItemView} />
             <Route path="/items/add" component={ItemForm} />
+            <Route exact path="/items" component={ItemList}/>
             <PrivateRoute path="/logout" component={Logout}/>
             <Route path="/login" render={() => (
                 AuthHelper.isLoggedIn() ? (
