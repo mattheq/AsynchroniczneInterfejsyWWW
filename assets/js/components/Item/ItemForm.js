@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Segment, Container, Form } from 'semantic-ui-react';
+import { Button, Breadcrumb, Segment, Container, Form } from 'semantic-ui-react';
 import ItemStore from '../../stores/ItemStore';
 import { Formik, Field } from 'formik';
 import Yup from 'yup';
 import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
+import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -24,9 +25,9 @@ class ItemForm extends React.Component {
         ItemStore.removeListener(ItemConstants.ITEM_CREATE_FAILED, this.handleItemCreateFailed);
     }
 
-    handleItemCreateSuccess() {
-        console.log('okejka itemek');
-        // this.props.history.push("/");
+    handleItemCreateSuccess(data) {
+        let json = JSON.parse(data);
+        this.props.history.push("/items/view/" + json.id);
     }
 
     handleItemCreateFailed(error) {
@@ -36,6 +37,7 @@ class ItemForm extends React.Component {
     render() {
         return (
             <Container className="base-container" >
+                <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
                 <Segment className="four wide column">
                     <Formik
                         initialValues={{

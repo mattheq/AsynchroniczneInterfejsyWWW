@@ -41,3 +41,8 @@ div.ui.container.base-container {
 .home-search-bar > div.ui.input {
     width: 40%;
 }
+
+div.ui.breadcrumb {
+    width: 100%;
+    padding-bottom: 10px;
+}
