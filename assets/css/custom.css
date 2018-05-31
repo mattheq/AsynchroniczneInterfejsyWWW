@@ -4,8 +4,7 @@
 }
 
 .base-container {
-    height: 666px;
-    min-height: 476px;
+    min-height: 666px;
 }
 
 div.ui.container.base-container {
