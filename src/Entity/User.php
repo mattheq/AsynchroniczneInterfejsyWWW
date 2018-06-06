@@ -1,5 +1,5 @@
 <?php
-//TODO: add firstname, lastname, phone_number to jwt payload
+
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
