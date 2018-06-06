@@ -36,9 +36,3 @@ export function itemFetch(data = {}) {
 //         data,
 //     });
 // }
-//
-// export function itemResolve() {
-//     dispatcher.dispatch({
-//         type: AuthConstants.USER_LOGOUT,
-//     })
-// }

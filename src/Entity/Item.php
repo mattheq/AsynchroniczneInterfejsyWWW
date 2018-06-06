@@ -207,4 +207,14 @@ class Item
         return $this->updated_at;
     }
 
+    public function getCreated_at()
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdated_at()
+    {
+        return $this->updated_at;
+    }
+
 }
