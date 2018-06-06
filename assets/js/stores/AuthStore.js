@@ -48,7 +48,6 @@ class AuthStore extends EventEmitter {
         }).then((response) => {
             if (response.data.token && !AuthHelper.checkIfTokenExpired(response.data.token)) {
                 AuthHelper.setToken(response.data.token);
-                // TODO: set credentials
             } else {
                 AuthHelper.logoutUser();
             }

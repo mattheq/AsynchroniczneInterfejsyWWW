@@ -2,7 +2,6 @@ import * as AuthConstants from '../constants/AuthConstants';
 import * as AuthActions from '../actions/AuthActions';
 import jwt_decode from 'jwt-decode';
 
-//TODO: create functions for decoding token and getting user credentials
 class AuthHelper {
 
     clear(key) {
@@ -37,20 +36,12 @@ class AuthHelper {
         return this.clear(AuthConstants.REFRESH_TOKEN_KEY);
     }
 
-    clearCredentials() {
-        return this.clear(AuthConstants.USER_INFO_KEY);
-    }
-
     setToken(jwtToken) {
         return this.set(jwtToken, AuthConstants.TOKEN_KEY);
     }
 
     setRefreshToken(refreshToken) {
         return this.set(refreshToken, AuthConstants.REFRESH_TOKEN_KEY);
-    }
-
-    setCredentials(data) {
-        return this.set(data, AuthConstants.USER_INFO_KEY);
     }
 
     getToken() {
@@ -62,13 +53,12 @@ class AuthHelper {
     }
 
     getCredentials() {
-        return this.get(AuthConstants.USER_INFO_KEY);
+        return jwt_decode(this.getToken());
     }
 
     logoutUser() {
         this.clearToken();
         this.clearRefreshToken();
-        this.clearCredentials();
     }
 
     isLoggedIn() {

@@ -26,6 +26,7 @@ class Navbar extends React.Component {
                     <Menu.Item as={Link} to={"/"} name={"home"} active={this.state.activeItem === 'home'} onClick={this.handleItemClick} />
                     {AuthHelper.isLoggedIn() ? (
                         <Menu.Menu position={"right"}>
+                            <Menu.Item header>Hello {AuthHelper.getCredentials().firstname} {AuthHelper.getCredentials().lastname}</Menu.Item>
                             <Menu.Item as={Link} to={"logout"} name={"logout"} />
                         </Menu.Menu>
                     ) : (
