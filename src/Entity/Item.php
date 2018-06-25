@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Filter\SearchAnnotation as Searchable;
+use App\Filter\SearchFilter;
 
 /**
  * TODO: Add item photo and address details
@@ -15,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *          "normalization_context"={
  *              "groups"={"item"}
- *          }
+ *          },
+ *          "filters"={"search"}
  *     },
  *     collectionOperations={
  *          "get"={"pagination_items_per_page"=12},
@@ -37,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *     }
  * )
+ * @Searchable({"title", "description"})
  */
 class Item
 {

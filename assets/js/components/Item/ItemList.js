@@ -1,11 +1,12 @@
 import React from 'react';
 import ItemStore from '../../stores/ItemStore';
-import {Breadcrumb, Card, Container, Image, Pagination} from 'semantic-ui-react';
+import {Breadcrumb, Card, Container, Dimmer, Icon, Image, Input, Pagination, Loader} from 'semantic-ui-react';
 import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
 import defaultImage from '../../../images/white-image.png';
 import PaginationHelper from '../../helpers/PaginationHelper';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
+import qs from "qs";
 
 class ItemList extends React.Component {
 
@@ -16,12 +17,14 @@ class ItemList extends React.Component {
             items: {},
             pagination: {},
             isLoading: true,
-            activePage: 1
+            activePage: 1,
+            searchValue: qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).search
         };
 
         this.handleItemFetchSuccess = this.handleItemFetchSuccess.bind(this);
         this.handleItemFetchFailed = this.handleItemFetchFailed.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
     }
 
     componentWillMount() {
@@ -35,7 +38,8 @@ class ItemList extends React.Component {
     }
 
     componentDidMount() {
-        ItemActions.itemFetch();
+        let searchString = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+        ItemActions.itemFetch(searchString);
     }
 
     handleItemFetchSuccess(data) {
@@ -56,8 +60,24 @@ class ItemList extends React.Component {
                 isLoading: true,
                 activePage: data.activePage
             });
-            ItemActions.itemFetch({ page: data.activePage })
+            let searchString = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+            ItemActions.itemFetch({ page: data.activePage, search: searchString.search})
         }
+    }
+
+    onKeyPress(e) {
+        if ('Enter' === e.key) {
+            this.updateList();
+        }
+    }
+
+    updateList() {
+        ItemActions.itemFetch({page: this.state.activePage, search: this.state.searchValue});
+        let searchQuerry = this.state.searchValue === '' ? '' : '?search=' + this.state.searchValue
+        this.props.history.push({
+            pathname: this.props.location.pathname,
+            search: searchQuerry
+        });
     }
 
     render() {
@@ -66,8 +86,28 @@ class ItemList extends React.Component {
         return (
             <Container className={"base-container"}>
                 <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
+                <Input
+                    value={this.state.searchValue}
+                    onChange={(e) => {
+                        this.setState({
+                            searchValue: e.target.value
+                        })
+                    }}
+                    icon={<Icon
+                        name="search"
+                        inverted
+                        circular
+                        link
+                        onClick={() => this.updateList()}
+                    />}
+                    placeholder="Search..."
+                    onKeyPress={(e) => this.onKeyPress(e)}
+                    style={{paddingBottom: '10px', width: '100%'}}
+                />
                 {this.state.isLoading ? (
-                    <p>LOADING</p>
+                    <Dimmer active inverted>
+                        <Loader size='massive'>Loading</Loader>
+                    </Dimmer>
                 ) : (
                     <section>
                         <Card.Group itemsPerRow={4}>
@@ -88,9 +128,9 @@ class ItemList extends React.Component {
                                 </Card>
                             )}
                         </Card.Group>
+                        {PaginationHelper.getTotalPages(pagination['hydra:last']) === 1 ? null : (
                         <Container textAlign='center'>
                             <Pagination
-                                // defaultActivePage={PaginationHelper.getDefaultActivePage(queryParams, pagination['hydra:last'])}
                                 defaultActivePage={this.state.activePage}
                                 totalPages={PaginationHelper.getTotalPages(pagination['hydra:last'])}
                                 onPageChange={(e, data) => this.handlePageChange(e, data)}
@@ -99,6 +139,7 @@ class ItemList extends React.Component {
                                 pointing
                                 secondary/>
                         </Container>
+                            )}
                     </section>
                 )}
             </Container>

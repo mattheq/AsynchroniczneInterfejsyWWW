@@ -11,14 +11,24 @@ class HomePage extends React.Component {
         super(props);
 
         this.state = {
-            redirectTo: '/items'
+            redirectTo: '/items',
+            searchValue: '',
         };
 
         this.onKeyPress = this.onKeyPress.bind(this);
+        this.redirect = this.redirect.bind(this);
     }
 
     onKeyPress(e) {
         if ('Enter' === e.key) {
+            this.redirect();
+        }
+    }
+
+    redirect() {
+        if (this.state.searchValue !== '') {
+            this.props.history.push(this.state.redirectTo + '?search=' + this.state.searchValue);
+        } else {
             this.props.history.push(this.state.redirectTo);
         }
     }
@@ -31,7 +41,23 @@ class HomePage extends React.Component {
                 </div>
                     <Container className={"home-search-bar"} textAlign={"center"}>
                         <Header size={"huge"} inverted>What are you looking for?</Header>
-                        <Input icon={<Icon name="search" inverted circular link onClick={() => this.props.history.push(this.state.redirectTo)}/>} placeholder="Search..." onKeyPress={(e) => this.onKeyPress(e)}/>
+                        <Input
+                            value={this.state.searchValue}
+                            onChange={(e) => {
+                                this.setState({
+                                    searchValue: e.target.value
+                                })
+                            }}
+                            icon={<Icon
+                                name="search"
+                                inverted
+                                circular
+                                link
+                                onClick={() => this.redirect()}
+                            />}
+                            placeholder="Search..."
+                            onKeyPress={(e) => this.onKeyPress(e)}
+                        />
                         <Divider />
                         {AuthHelper.isLoggedIn() ? (
                         <Grid columns={1} textAlign={"center"} style={{marginTop: 0}}>

@@ -36,10 +36,9 @@ class ItemStore extends EventEmitter {
     }
 
     fetchItem(data) {
-        axios.get('/api/v1/items', {params: data}, {
+        let queryString = qs.stringify(data);
+        axios.get('/api/v1/items' + (queryString.length > 0 ? ('?' + queryString) : ''), {
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
                 'Authorization': 'Bearer ' + AuthHelper.getToken()
             }
         }).then((response) => {

@@ -35,10 +35,17 @@ class PaginationHelper {
     }
 
     parseUrl(url) {
+        if (!url) {
+            return 1;
+        }
         let pageQueryParamString = "?page=";
         let index = url.lastIndexOf(pageQueryParamString);
         if (-1 === index) {
-            return 1;
+            pageQueryParamString = "&page=";
+            index = url.lastIndexOf(pageQueryParamString);
+            if (-1 === index) {
+                return 1;
+            }
         }
 
         let pageString = url.substr(index + pageQueryParamString.length);
