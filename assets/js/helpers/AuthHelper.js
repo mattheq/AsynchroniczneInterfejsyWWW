@@ -53,7 +53,7 @@ class AuthHelper {
     }
 
     getCredentials() {
-        return jwt_decode(this.getToken());
+        return this.getToken() ? jwt_decode(this.getToken()) : null;
     }
 
     logoutUser() {

@@ -15,6 +15,7 @@ import Registration from '../Registration/Registration';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import AuthHelper from '../../helpers/AuthHelper';
 import Navbar from "../Layout/Navbar";
+import ContextProvider from "../ContextProvider/ContextProvider";
 
 class App extends React.Component {
 
@@ -24,31 +25,33 @@ class App extends React.Component {
 
     render() {
         return (
-            <HashRouter>
-                <div>
-                    <Route path="/" component={Navbar} />
-                    <Route exact path="/" component={HomePage}/>
-                    <Route path="/items/view/:id" component={ItemView} />
-                    <Route path="/items/add" component={ItemForm} />
-                    <Route exact path="/items" component={ItemList}/>
-                    <PrivateRoute path="/logout" component={Logout}/>
-                    <Route path="/login" render={() => (
-                        AuthHelper.isLoggedIn() ? (
-                            <Redirect to="/" />
-                        ) : (
-                            <Login />
-                        )
-                    )}/>
-                    <Route path="/signup" render={() => (
-                        AuthHelper.isLoggedIn() ? (
-                            <Redirect to="/" />
-                        ) : (
-                            <Registration />
-                        )
-                    )}/>
-                    <Route path="/" component={Footer} />
-                </div>
-            </HashRouter>
+            <ContextProvider>
+                <HashRouter>
+                    <div>
+                        <Route path="/" component={Navbar} />
+                        <Route exact path="/" component={HomePage}/>
+                        <Route path="/items/view/:id" component={ItemView} />
+                        <PrivateRoute path="/items/add" component={ItemForm} />
+                        <Route exact path="/items" component={ItemList}/>
+                        <PrivateRoute path="/logout" component={Logout}/>
+                        <Route path="/login" render={() => (
+                            AuthHelper.isLoggedIn() ? (
+                                <Redirect to="/" />
+                            ) : (
+                                <Login />
+                            )
+                        )}/>
+                        <Route path="/signup" render={() => (
+                            AuthHelper.isLoggedIn() ? (
+                                <Redirect to="/" />
+                            ) : (
+                                <Registration />
+                            )
+                        )}/>
+                        <Route path="/" component={Footer} />
+                    </div>
+                </HashRouter>
+            </ContextProvider>
         )
     }
 }

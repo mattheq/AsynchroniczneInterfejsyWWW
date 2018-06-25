@@ -29,7 +29,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"item", "user"})
+     * @Groups({"item", "user", "message"})
      */
     private $id;
 
@@ -37,7 +37,7 @@ class User implements UserInterface, \Serializable
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
-     * @Groups({"item", "user"})
+     * @Groups({"item", "user", "message"})
      */
     private $firstname;
 
@@ -45,7 +45,7 @@ class User implements UserInterface, \Serializable
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
-     * @Groups({"item", "user"})
+     * @Groups({"item", "user", "message"})
      */
     private $lastname;
 
@@ -54,14 +54,14 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
-     * @Groups({"item", "user"})
+     * @Groups({"item", "user", "message"})
      */
     private $email;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"item", "user"})
+     * @Groups({"item", "user", "message"})
      */
     private $phone_number;
 
@@ -106,6 +106,18 @@ class User implements UserInterface, \Serializable
     private $items;
 
     /**
+     * @var Message[]
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="to")
+     */
+    private $messages_to;
+
+    /**
+     * @var Message[]
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="from")
+     */
+    private $messages_from;
+
+    /**
      * User constructor.
      * @throws \Exception
      */
@@ -113,6 +125,8 @@ class User implements UserInterface, \Serializable
     {
         $this->setAuthKey(base64_encode(random_bytes(32)));
         $this->items = new ArrayCollection();
+        $this->messages_to = new ArrayCollection();
+        $this->messages_from = new ArrayCollection();
     }
 
     /**
@@ -199,6 +213,11 @@ class User implements UserInterface, \Serializable
      * @return string
      */
     public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    public function getPhone_number()
     {
         return $this->phone_number;
     }
@@ -321,6 +340,38 @@ class User implements UserInterface, \Serializable
     public function setItems(array $items): void
     {
         $this->items = $items;
+    }
+
+    /**
+     * @return Message[]
+     */
+    public function getMessagesTo(): array
+    {
+        return $this->messages_to;
+    }
+
+    /**
+     * @param Message[] $messages_to
+     */
+    public function setMessagesTo(array $messages_to): void
+    {
+        $this->messages_to = $messages_to;
+    }
+
+    /**
+     * @return Message[]
+     */
+    public function getMessagesFrom(): array
+    {
+        return $this->messages_from;
+    }
+
+    /**
+     * @param Message[] $messages_from
+     */
+    public function setMessagesFrom(array $messages_from): void
+    {
+        $this->messages_from = $messages_from;
     }
 
 }

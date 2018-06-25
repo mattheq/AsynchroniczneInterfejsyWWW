@@ -22,7 +22,7 @@ class ItemStore extends EventEmitter {
     }
 
     viewItem(id) {
-        axios.get(`/api/v1/items/${id}`, null, {
+        axios.get(`/api/v1/items/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',

@@ -6,6 +6,7 @@ import * as ItemConstants from "../../constants/ItemConstants";
 import ItemStore from "../../stores/ItemStore";
 import * as ItemActions from "../../actions/ItemActions";
 import Chat from '../Chat/Chat';
+import AuthHelper from '../../helpers/AuthHelper';
 
 //TODO: get item attributes when mounting, tip: this.props.match.params.id <- id from url
 class ItemView extends React.Component {
@@ -94,8 +95,8 @@ class ItemView extends React.Component {
                                 </div>
                             </Card.Content>
                         </Card>
-                        {this.state.showChat ?
-                        <Chat firstname={this.state.item.user.firstname} lastname={this.state.item.user.lastname}/>
+                        {this.state.showChat && AuthHelper.isLoggedIn() ?
+                        <Chat firstname={this.state.item.user.firstname} lastname={this.state.item.user.lastname} user_id={this.state.item.user.id}/>
                             : null }
                     </section>
                 )}
