@@ -32,7 +32,6 @@ class ItemStore extends EventEmitter {
         axios.get(`/api/v1/items/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
                 'Authorization': 'Bearer ' + AuthHelper.getToken()
             }
         }).then((response) => {

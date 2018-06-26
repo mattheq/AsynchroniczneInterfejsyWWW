@@ -81,6 +81,7 @@ class ItemPhoto
 
     /**
      * @var string
+     * @Groups({"item"})
      */
     private $path;
 
