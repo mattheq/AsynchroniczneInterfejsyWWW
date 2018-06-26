@@ -8,9 +8,16 @@ import * as ItemConstants from "../constants/ItemConstants";
 class ItemStore extends EventEmitter {
 
     createItem(data) {
-        axios.post('/api/v1/items', qs.stringify(data), {
+        const form = new FormData();
+        form.append('title', data.create_item.title);
+        form.append('description', data.create_item.description);
+        form.append('type', data.create_item.type);
+        data.create_item.files.forEach((file) => {
+            form.append('files[]', file);
+        });
+        axios.post('/api/v1/items', form, {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'multipart/form-data',
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + AuthHelper.getToken()
             }

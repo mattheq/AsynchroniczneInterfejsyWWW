@@ -6,6 +6,17 @@ import Yup from 'yup';
 import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
+import PhotoThumb from "../PhotoThumb/PhotoThumb";
+import Dropzone from 'react-dropzone';
+
+const dropzoneStyle = {
+    width: "100%",
+    height: "auto",
+    borderWidth: 2,
+    borderColor: "rgb(102, 102, 102)",
+    borderStyle: "dashed",
+    borderRadius: 5,
+};
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -26,8 +37,7 @@ class ItemForm extends React.Component {
     }
 
     handleItemCreateSuccess(data) {
-        let json = JSON.parse(data);
-        this.props.history.push("/items/view/" + json.id);
+        this.props.history.push("/items/view/" + data.id);
     }
 
     handleItemCreateFailed(error) {
@@ -44,6 +54,7 @@ class ItemForm extends React.Component {
                             title: '',
                             description: '',
                             type: 0,
+                            files: []
                         }}
 
                         onSubmit={(values, { setSubmitting }) => {
@@ -53,7 +64,7 @@ class ItemForm extends React.Component {
 
                         validationSchema={Yup.object().shape({
                             title: Yup.string().required('Title name is required'),
-                            description: Yup.string().required('Description name is required'),
+                            description: Yup.string().required('Description name is required')
                         })}
 
                         render={({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
@@ -82,6 +93,32 @@ class ItemForm extends React.Component {
                                         <Field type="radio" name="type" tabIndex="0" value="1" checked={values.type === 1} onChange={() => setFieldValue("type", 1)}/>
                                         <label>Found</label>
                                     </div>
+                                </div>
+                                <div className={"field " + (errors.files && "error")}>
+                                    <label>Photos</label>
+                                    <Dropzone style={dropzoneStyle} accept="image/*" onDrop={(acceptedFiles) => {
+                                        if (acceptedFiles.length === 0) {
+                                            return;
+                                        }
+
+                                        setFieldValue("files", values.files.concat(acceptedFiles));
+                                    }}>
+                                        {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
+                                            if (isDragActive) {
+                                                return "This file is authorized";
+                                            }
+
+                                            if (isDragReject) {
+                                                return "This file is not authorized";
+                                            }
+
+                                            if (values.files.length === 0) {
+                                                return <p>Try dragging a photo here!</p>
+                                            }
+
+                                            return values.files.map((photo, i) => (<PhotoThumb key={i} photo={photo} />));
+                                        }}
+                                    </Dropzone>
                                 </div>
                                 <Button type={"submit"} disabled={isSubmitting} primary>Create</Button>
                             </Form>

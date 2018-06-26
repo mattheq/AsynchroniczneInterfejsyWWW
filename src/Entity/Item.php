@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Filter\SearchAnnotation as Searchable;
 use App\Filter\SearchFilter;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Controller\CreateItemAction;
 
 /**
  * TODO: Add item photo and address details
@@ -26,7 +30,9 @@ use App\Filter\SearchFilter;
  *          "post"={
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
  *              "method"="POST",
- *              "controller"="\App\Controller\ItemController::createAction"
+ *              "path"="/items",
+ *              "controller"=CreateItemAction::class,
+ *              "defaults"={"_api_receive"=false},
  *          }
  *     },
  *     itemOperations={
@@ -107,6 +113,28 @@ class Item
      * @Groups({"item"})
      */
     private $user;
+
+    /**
+     * @var ItemPhoto[]
+     * @ORM\OneToMany(targetEntity="ItemPhoto", mappedBy="item", cascade={"persist"})
+     * @Groups({"item"})
+     */
+    private $photos;
+
+    /**
+     * @var UploadedFile[]|null
+     * @Assert\NotNull()
+     * @Vich\UploadableField(mapping="item_photo", fileNameProperty="name")
+     */
+    private $files;
+
+    /**
+     * Item constructor.
+     */
+    public function __construct()
+    {
+        $this->photos = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -220,6 +248,77 @@ class Item
     public function getUpdated_at()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * @return ItemPhoto[]
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
+     * @param ItemPhoto[] $photos
+     */
+    public function setPhotos(array $photos): void
+    {
+        $this->photos = $photos;
+    }
+
+    /**
+     * @return File[]
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param File[] $files
+     */
+    public function setFiles($files): void
+    {
+        $this->files = $files;
+    }
+
+
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function upload()
+    {
+        foreach($this->files as $file)
+        {
+            $photo = new ItemPhoto();
+
+            /*
+             * These lines could be moved to the File Class constructor to factorize
+             * the File initialization and thus allow other classes to own Files
+             */
+            $path = sha1(uniqid(mt_rand(), true)).'.'. $file->guessExtension();
+            $photo->setName($path);
+            $photo->setSize($file->getClientSize());
+            $photo->setOriginalName($file->getClientOriginalName());
+
+            $file->move($this->getUploadRootDir(), $path);
+
+            $this->getPhotos()->add($photo);
+            $photo->setItem($this);
+
+            unset($file);
+        }
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../public/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'media';
     }
 
 }
