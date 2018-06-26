@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Breadcrumb, Segment, Container, Form } from 'semantic-ui-react';
+import { Button, Breadcrumb, Segment, Container, Form, Label, TextArea } from 'semantic-ui-react';
 import ItemStore from '../../stores/ItemStore';
 import { Formik, Field } from 'formik';
 import Yup from 'yup';
@@ -8,6 +8,8 @@ import * as ItemConstants from '../../constants/ItemConstants';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import PhotoThumb from "../PhotoThumb/PhotoThumb";
 import Dropzone from 'react-dropzone';
+import Datepicker from 'react-datepicker';
+import moment from 'moment';
 
 const dropzoneStyle = {
     width: "100%",
@@ -54,7 +56,12 @@ class ItemForm extends React.Component {
                             title: '',
                             description: '',
                             type: 0,
-                            files: []
+                            files: [],
+                            country: '',
+                            city: '',
+                            street: '',
+                            street_number: '',
+                            daytime: moment(),
                         }}
 
                         onSubmit={(values, { setSubmitting }) => {
@@ -64,7 +71,8 @@ class ItemForm extends React.Component {
 
                         validationSchema={Yup.object().shape({
                             title: Yup.string().required('Title name is required'),
-                            description: Yup.string().required('Description name is required')
+                            description: Yup.string().required('Description name is required'),
+                            city: Yup.string().required('City is required'),
                         })}
 
                         render={({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
@@ -94,32 +102,72 @@ class ItemForm extends React.Component {
                                         <label>Found</label>
                                     </div>
                                 </div>
-                                <div className={"field " + (errors.files && "error")}>
-                                    <label>Photos</label>
-                                    <Dropzone style={dropzoneStyle} accept="image/*" onDrop={(acceptedFiles) => {
-                                        if (acceptedFiles.length === 0) {
-                                            return;
-                                        }
-
-                                        setFieldValue("files", values.files.concat(acceptedFiles));
-                                    }}>
-                                        {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
-                                            if (isDragActive) {
-                                                return "This file is authorized";
+                                <Segment>
+                                    <Label attached='top'>Photos</Label>
+                                    <div className={"field " + (errors.files && "error")}>
+                                        <Dropzone style={dropzoneStyle} accept="image/*" onDrop={(acceptedFiles) => {
+                                            if (acceptedFiles.length === 0) {
+                                                return;
                                             }
 
-                                            if (isDragReject) {
-                                                return "This file is not authorized";
-                                            }
+                                            setFieldValue("files", values.files.concat(acceptedFiles));
+                                        }}>
+                                            {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
+                                                if (isDragActive) {
+                                                    return "This file is authorized";
+                                                }
 
-                                            if (values.files.length === 0) {
-                                                return <p>Try dragging a photo here!</p>
-                                            }
+                                                if (isDragReject) {
+                                                    return "This file is not authorized";
+                                                }
 
-                                            return values.files.map((photo, i) => (<PhotoThumb key={i} photo={photo} />));
-                                        }}
-                                    </Dropzone>
-                                </div>
+                                                if (values.files.length === 0) {
+                                                    return <p>Try dragging a photo here!</p>
+                                                }
+
+                                                return values.files.map((photo, i) => (<PhotoThumb key={i} photo={photo} />));
+                                            }}
+                                        </Dropzone>
+                                    </div>
+                                </Segment>
+                                <Segment>
+                                    <Label attached='top'>Additional information</Label>
+                                    <Form.Group widths='equal'>
+                                        <div className={"field "}>
+                                            <label>Country</label>
+                                            <Field type="text" name="country" />
+                                        </div>
+                                        <div className={"field " + (touched.city && errors.city && "error")}>
+                                            <label>City</label>
+                                            <Field type="text" name="city" />
+                                            {touched.city && errors.city && <div className="ui basic red pointing prompt label">{errors.city}</div>}
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group widths='equal'>
+                                        <div className={"field "}>
+                                            <label>Street</label>
+                                            <Field type="text" name="street" />
+                                        </div>
+                                        <div className={"field "}>
+                                            <label>Street number</label>
+                                            <Field type="text" name="street_number" />
+                                        </div>
+                                        <div className={"field"}>
+                                            <label>Daytime</label>
+                                            <Field type="text" name="daytime" />
+                                            {/*formik setFieldValue do zmiany czasu*/}
+                                            <Datepicker
+                                                selected={values.daytime}
+                                                showTimeSelect
+                                                timeFormat="HH:mm"
+                                                timeIntervals={15}
+                                                dateFormat="LLL"
+                                                timeCaption="time"
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Segment>
+
                                 <Button type={"submit"} disabled={isSubmitting} primary>Create</Button>
                             </Form>
                         )}

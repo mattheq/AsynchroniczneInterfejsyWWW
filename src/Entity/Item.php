@@ -129,6 +129,13 @@ class Item
     private $files;
 
     /**
+     * @var ItemDetails
+     * @ORM\OneToOne(targetEntity="ItemDetails", inversedBy="item", cascade={"persist"})
+     * @Groups({"item"})
+     */
+    private $item_details;
+
+    /**
      * Item constructor.
      */
     public function __construct()
@@ -282,7 +289,21 @@ class Item
         $this->files = $files;
     }
 
+    /**
+     * @return ItemDetails
+     */
+    public function getItemDetails()
+    {
+        return $this->item_details;
+    }
 
+    /**
+     * @param ItemDetails $item_details
+     */
+    public function setItemDetails(ItemDetails $item_details): void
+    {
+        $this->item_details = $item_details;
+    }
 
     /**
      * @ORM\PreFlush()

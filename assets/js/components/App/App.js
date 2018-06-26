@@ -3,6 +3,7 @@ import {Route, HashRouter, Redirect} from 'react-router-dom';
 
 import 'semantic-ui-css/semantic.min.css';
 import './../../../css/custom.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import Footer from '../Layout/Footer';
 import HomePage from '../HomePage/HomePage';

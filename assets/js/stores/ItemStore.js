@@ -15,6 +15,11 @@ class ItemStore extends EventEmitter {
         data.create_item.files.forEach((file) => {
             form.append('files[]', file);
         });
+        form.append("item_details[country]", data.create_item.country);
+        form.append("item_details[city]", data.create_item.city);
+        form.append("item_details[street]", data.create_item.street);
+        form.append("item_details[street_number]", data.create_item.street_number);
+        form.append("item_details[daytime]", data.create_item.daytime);
         axios.post('/api/v1/items', form, {
             headers: {
                 'Content-Type': 'multipart/form-data',

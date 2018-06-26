@@ -2,35 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\Item;
-use App\Entity\ItemPhoto;
+use App\Entity\ItemDetails;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreateItemType extends AbstractType
+class CreateItemDetailsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('files', FileType::class, [
-                'multiple' => true,
-                'required' => false,
-            ])
-            ->add('title', TextType::class)
-            ->add('description', TextType::class)
-            ->add('type', IntegerType::class)
-            ->add('item_details', CreateItemDetailsType::class)
+            ->add('country', TextType::class)
+            ->add('city', TextType::class)
+            ->add('street', TextType::class)
+            ->add('street_number', TextType::class)
+            ->add('daytime', IntegerType::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Item::class,
+            'data_class' => ItemDetails::class,
             'csrf_protection' => false,
         ]);
     }

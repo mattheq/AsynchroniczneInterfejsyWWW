@@ -12,6 +12,11 @@ div.ui.container.base-container {
     padding-bottom: 10px;
 }
 
+/* DATEPICKER TIME PADDING */
+ul.react-datepicker__time-list {
+    padding: 0;
+}
+
 /* HOMEPAGE SEARCH */
 .home-search-section {
     position: relative;
