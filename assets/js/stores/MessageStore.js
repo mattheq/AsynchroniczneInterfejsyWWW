@@ -4,7 +4,6 @@ import AuthHelper from '../helpers/AuthHelper';
 import dispatcher from "../dispatcher";
 import qs from "qs";
 import * as MessageConstants from "../constants/MessageConstants";
-import * as ItemConstants from "../constants/ItemConstants";
 
 class MessageStore extends EventEmitter {
 
@@ -27,6 +26,20 @@ class MessageStore extends EventEmitter {
         });
     }
 
+    fetchConversations() {
+        axios.get('/api/v1/messages/recent_conversations', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + AuthHelper.getToken()
+            }
+        }).then((response) => {
+            this.emit(MessageConstants.MESSAGE_CONVERSATIONS_FETCH_SUCCESS, response.data);
+        }).catch((error) => {
+            this.emit(MessageConstants.MESSAGE_CONVERSATIONS_FETCH_FAILED, error.response);
+        });
+    }
+
     handleActions(action) {
         switch (action.type) {
             case MessageConstants.MESSAGE_RECEIVED: {
@@ -36,6 +49,11 @@ class MessageStore extends EventEmitter {
 
             case MessageConstants.MESSAGE_FETCH: {
                 this.fetchMessages(action.data);
+                break;
+            }
+
+            case MessageConstants.MESSAGE_CONVERSATIONS_FETCH: {
+                this.fetchConversations();
                 break;
             }
         }

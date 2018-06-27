@@ -9,6 +9,9 @@ import Chat from '../Chat/Chat';
 import AuthHelper from '../../helpers/AuthHelper';
 import ImageGallery from 'react-image-gallery';
 import moment from 'moment';
+import * as ChatActions from "../../actions/ChatActions";
+import * as ChatConstants from "../../constants/ChatConstants";
+import ChatStore from "../../stores/ChatStore";
 
 //TODO: get item attributes when mounting, tip: this.props.match.params.id <- id from url
 class ItemView extends React.Component {
@@ -52,6 +55,7 @@ class ItemView extends React.Component {
         this.onButtonClick = this.onButtonClick.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.onUpdateButtonClick = this.onUpdateButtonClick.bind(this);
+        this.handleHomeChatRendered = this.handleHomeChatRendered.bind(this);
     }
 
     componentWillMount() {
@@ -59,6 +63,7 @@ class ItemView extends React.Component {
         ItemStore.on(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
         ItemStore.on(ItemConstants.ITEM_DELETE_SUCCESS, this.handleItemDeleteSuccess);
         ItemStore.on(ItemConstants.ITEM_DELETE_FAILED, this.handleItemDeleteFailed);
+        ChatStore.on(ChatConstants.HOME_CHAT_RENDERED, this.handleHomeChatRendered);
     }
 
     componentWillUnmount() {
@@ -66,10 +71,17 @@ class ItemView extends React.Component {
         ItemStore.removeListener(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
         ItemStore.removeListener(ItemConstants.ITEM_DELETE_SUCCESS, this.handleItemDeleteSuccess);
         ItemStore.removeListener(ItemConstants.ITEM_DELETE_FAILED, this.handleItemDeleteFailed);
+        ChatStore.removeListener(ChatConstants.HOME_CHAT_RENDERED, this.handleHomeChatRendered);
     }
 
     componentDidMount() {
         ItemActions.itemView(this.props.match.params.id);
+    }
+
+    handleHomeChatRendered() {
+        this.setState({
+            showChat: false
+        })
     }
 
     handleItemViewSuccess(data) {
@@ -84,7 +96,6 @@ class ItemView extends React.Component {
     }
 
     handleItemDeleteSuccess(data) {
-        console.log(data);
         this.props.history.push('/items');
     }
 
@@ -93,6 +104,7 @@ class ItemView extends React.Component {
     }
 
     onButtonClick() {
+        ChatActions.hideHomeChat();
         this.setState({
             showChat: true
         })
@@ -155,7 +167,7 @@ class ItemView extends React.Component {
                                     {user_id !== null ? (
                                     <Card.Content extra>
                                         <div className='ui two buttons'>
-                                            <Button basic color='green' onClick={() => this.setState({showChat: true})}>
+                                            <Button basic color='green' onClick={() => this.onButtonClick()}>
                                                 Open chat
                                             </Button>
                                         </div>

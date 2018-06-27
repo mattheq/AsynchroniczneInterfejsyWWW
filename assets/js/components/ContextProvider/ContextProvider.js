@@ -5,7 +5,8 @@ import {Context} from "../Context/Context";
 class ContextProvider extends React.Component {
 
     state = {
-        conn: AuthHelper.isLoggedIn() ? new WebSocket('ws://localhost:8080?user_id=' + AuthHelper.getCredentials().user_id) : null
+        isChatOpen: false,
+        disableChat: () => {console.log('context func')}
     };
 
     render() {

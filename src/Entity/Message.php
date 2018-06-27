@@ -22,6 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
  *              "method"="GET",
  *              "controller"="\App\Controller\MessageController::getConversationAction"
+ *          },
+ *          "getRecentConversations"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
+ *              "method"="GET",
+ *              "controller"="\App\Controller\MessageController::getRecentConversationsAction"
  *          }
  *     },
  *     itemOperations={

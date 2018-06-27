@@ -24,8 +24,15 @@ class MessageController extends Controller
         return new JsonResponse($this->get('serializer')->serialize(array_reverse($messages),'json'));
     }
 
+    /**
+     * @Route("/api/v1/messages/recent_conversations", name="getRecentConversation")
+     * @Method("GET")
+     */
     public function getRecentConversationsAction()
     {
+        $messages = $this->getDoctrine()->getRepository(Message::class)
+            ->findUserLastFiveConversations($this->getUser()->getId());
 
+        return new JsonResponse($this->get('serializer')->serialize(array_reverse($messages),'json'));
     }
 }

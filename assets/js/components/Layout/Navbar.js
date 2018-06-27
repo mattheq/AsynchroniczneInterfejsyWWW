@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {Menu, Segment} from 'semantic-ui-react';
 import LoginModal from '../Login/LoginModal';
 import RegistrationModal from '../Registration/RegistrationModal';
+import MessageDropdownList from '../Message/MessageDropdownList'
 
 class Navbar extends React.Component {
     // TODO: set 'active' class based on route
@@ -27,6 +28,7 @@ class Navbar extends React.Component {
                     {AuthHelper.isLoggedIn() ? (
                         <Menu.Menu position={"right"}>
                             <Menu.Item header>Hello {AuthHelper.getCredentials().firstname} {AuthHelper.getCredentials().lastname}</Menu.Item>
+                            <MessageDropdownList />
                             <Menu.Item as={Link} to={"logout"} name={"logout"} />
                         </Menu.Menu>
                     ) : (

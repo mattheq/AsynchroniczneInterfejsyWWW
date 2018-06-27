@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -31,30 +32,12 @@ class MessageRepository extends ServiceEntityRepository
 
     public function findUserLastFiveConversations($logged_user)
     {
-        //TODO: query
-        /*
-         * SELECT m1.* FROM message m1
-	        LEFT JOIN message m2
-            ON (m1.from_id = m2.from_id AND m1.id < m2.id)
-	        WHERE m2.id IS NULL AND m1.from_id != 1;
-         */
         return $this->createQueryBuilder('m')
-            ->andWhere('m.from = :logged_user or m.to = :logged_user')->setParameter('logged_user', $logged_user)
-            ->groupBy('m.from')
+            ->innerJoin('m.from', 'f')
+            ->innerJoin('m.to', 't')
+            ->where('t.id = :logged_user')->setParameter('logged_user', $logged_user)
+            ->groupBy('f.id')
             ->getQuery()
             ->getResult();
     }
-
-    /*
-    public function findBySomething($value)
-    {
-        return $this->createQueryBuilder('m')
-            ->where('m.something = :value')->setParameter('value', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 }

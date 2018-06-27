@@ -6,7 +6,6 @@ import MessageStore from "../../stores/MessageStore";
 import * as MessageActions from "../../actions/MessageActions";
 import * as ItemActions from "../../actions/ItemActions";
 
-// TODO: get recent/unread messages on render, send json with jwt token
 class Chat extends React.Component {
 
     constructor(props) {
@@ -35,6 +34,12 @@ class Chat extends React.Component {
 
     componentDidMount() {
         MessageActions.fetchMessages(this.props.user_id);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.user_id !== prevProps.user_id) {
+            MessageActions.fetchMessages(this.props.user_id);
+        }
     }
 
     _onMessageWasSent(message) {
@@ -82,11 +87,14 @@ class Chat extends React.Component {
 
         this.state.conn.onmessage = function(e) {
             MessageActions.receiveMessage(e.data);
-            console.log(e.data);
         };
 
         this.state.conn.onerror = function(e) {
             console.log(e);
+        };
+
+        this.state.conn.onclose = function (e) {
+            console.log("Disconnected")
         };
 
         return (

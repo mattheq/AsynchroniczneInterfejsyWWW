@@ -14,3 +14,9 @@ export function fetchMessages(data) {
         data,
     });
 }
+
+export function fetchConversations() {
+    dispatcher.dispatch({
+        type: MessageConstants.MESSAGE_CONVERSATIONS_FETCH
+    })
+}
