@@ -154,10 +154,9 @@ class ItemForm extends React.Component {
                                         </div>
                                         <div className={"field"}>
                                             <label>Daytime</label>
-                                            <Field type="text" name="daytime" />
-                                            {/*formik setFieldValue do zmiany czasu*/}
                                             <Datepicker
                                                 selected={values.daytime}
+                                                onChange={(date) => setFieldValue("daytime", date)}
                                                 showTimeSelect
                                                 timeFormat="HH:mm"
                                                 timeIntervals={15}
