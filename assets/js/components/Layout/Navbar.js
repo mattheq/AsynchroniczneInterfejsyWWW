@@ -29,7 +29,7 @@ class Navbar extends React.Component {
                         <Menu.Menu position={"right"}>
                             <Menu.Item header>Hello {AuthHelper.getCredentials().firstname} {AuthHelper.getCredentials().lastname}</Menu.Item>
                             <MessageDropdownList />
-                            <Menu.Item as={Link} to={"logout"} name={"logout"} />
+                            <Menu.Item as={Link} to={"/logout"} name={"logout"} />
                         </Menu.Menu>
                     ) : (
                         <Menu.Menu position={"right"}>
