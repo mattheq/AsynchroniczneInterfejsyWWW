@@ -34,7 +34,7 @@ class LoginForm extends React.Component {
     handleLoginSuccess(data) {
         AuthHelper.setToken(data.jwtToken);
         AuthHelper.setRefreshToken(data.refreshToken);
-        this.props.history.push('/');
+        this.props.history.push(this.props.location.pathname);
     }
 
     handleLoginFailed(error) {
