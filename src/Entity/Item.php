@@ -22,6 +22,9 @@ use App\Controller\CreateItemAction;
  *          "normalization_context"={
  *              "groups"={"item"}
  *          },
+ *          "denormalization_context"={
+ *              "groups"={"item"}
+ *          },
  *          "filters"={"search"}
  *     },
  *     collectionOperations={
@@ -47,8 +50,7 @@ use App\Controller\CreateItemAction;
  *              "access_control_message"="Sorry, but you are not the owner."
  *          },
  *          "put"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object.user == user",
- *              "access_control_message"="Sorry, but you are not the owner."
+ *              "method"="PUT"
  *          }
  *     }
  * )
@@ -128,7 +130,6 @@ class Item
 
     /**
      * @var UploadedFile[]|null
-     * @Assert\NotNull()
      * @Vich\UploadableField(mapping="item_photo", fileNameProperty="name")
      */
     private $files;
@@ -314,6 +315,11 @@ class Item
      * @param ItemDetails $item_details
      */
     public function setItemDetails(ItemDetails $item_details): void
+    {
+        $this->item_details = $item_details;
+    }
+
+    public function setItem_details(ItemDetails $item_details)
     {
         $this->item_details = $item_details;
     }

@@ -9,6 +9,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import Footer from '../Layout/Footer';
 import HomePage from '../HomePage/HomePage';
 import ItemForm from '../Item/ItemForm';
+import ItemUpdateForm from '../Item/ItemUpdateForm';
 import ItemList from '../Item/ItemList';
 import ItemView from '../Item/ItemView';
 import Login from '../Login/Login';
@@ -33,6 +34,7 @@ class App extends React.Component {
                         <Route path="/" component={Navbar} />
                         <Route exact path="/" component={HomePage}/>
                         <Route path="/items/view/:id" component={ItemView} />
+                        <PrivateRoute path="/items/update/:id" component={ItemUpdateForm}/>
                         <PrivateRoute path="/items/add" component={ItemForm} />
                         <Route exact path="/items" component={ItemList}/>
                         <PrivateRoute path="/logout" component={Logout}/>

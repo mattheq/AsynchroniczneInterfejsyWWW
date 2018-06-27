@@ -10,9 +10,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ItemDetailsRepository")
  * @ApiResource(
- *     attributes={
- *          "normalization_context"={
- *              "groups"={"item"}
+ *     collectionOperations={
+ *          "get"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"
+ *          },
+ *          "delete"={
+ *              "method"="DELETE",
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')  and object.user == user",
+ *              "access_control_message"="Sorry, but you are not the owner."
+ *          },
+ *          "put"={
+ *              "method"="PUT"
  *          }
  *     }
  * )
@@ -168,6 +181,11 @@ class ItemDetails
      * @return string
      */
     public function getStreetNumber()
+    {
+        return $this->street_number;
+    }
+
+    public function getStreet_number()
     {
         return $this->street_number;
     }

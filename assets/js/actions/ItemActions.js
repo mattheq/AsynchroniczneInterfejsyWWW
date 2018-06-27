@@ -29,9 +29,10 @@ export function itemDelete(data) {
     });
 }
 
-// export function itemUpdate(data) {
-//     dispatcher.dispatch({
-//         type: AuthConstants.USER_REFRESH_TOKEN,
-//         data,
-//     });
-// }
+export function itemUpdate(id, data) {
+    dispatcher.dispatch({
+        type: ItemConstants.ITEM_UPDATE,
+        id,
+        data,
+    });
+}

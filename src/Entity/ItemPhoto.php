@@ -13,11 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="item_photo")
  * @Vich\Uploadable
  * @ApiResource(
- *      attributes={
- *          "normalization_context"={
- *              "groups"={"item"}
- *          }
- *     },
  *     collectionOperations={
  *          "get"={
  *              "pagination_items_per_page"=12,

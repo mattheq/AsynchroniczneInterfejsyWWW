@@ -14,5 +14,9 @@ export const ITEM_DELETE = "ITEM_DELETE";
 export const ITEM_DELETE_SUCCESS = "ITEM_DELETE_SUCCESS";
 export const ITEM_DELETE_FAILED = "ITEM_DELETE_FAILED";
 
+export const ITEM_UPDATE = "ITEM_UPDATE";
+export const ITEM_UPDATE_SUCCESS = "ITEM_UPDATE_SUCCESS";
+export const ITEM_UPDATE_FAILED = "ITEM_UPDATE_FAILED";
+
 export const ITEM_MISSING = 0;
 export const ITEM_FOUND = 1;

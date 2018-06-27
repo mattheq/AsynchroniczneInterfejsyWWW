@@ -51,6 +51,7 @@ class ItemView extends React.Component {
         this.handleItemDeleteFailed = this.handleItemDeleteFailed.bind(this);
         this.onButtonClick = this.onButtonClick.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
+        this.onUpdateButtonClick = this.onUpdateButtonClick.bind(this);
     }
 
     componentWillMount() {
@@ -99,6 +100,10 @@ class ItemView extends React.Component {
 
     onDeleteButtonClick() {
         ItemActions.itemDelete(this.state.item.id);
+    }
+
+    onUpdateButtonClick() {
+        this.props.history.push('/items/update/' + this.state.item.id);
     }
 
     render() {
@@ -160,7 +165,7 @@ class ItemView extends React.Component {
                             ) : (
                                 <section>
                                     <Divider horizontal />
-                                    <Button fluid color={'green'}>
+                                    <Button fluid color={'green'} onClick={() => this.onUpdateButtonClick()}>
                                         Update item
                                     </Button>
                                     <Divider horizontal>Or</Divider>

@@ -59,7 +59,6 @@ class ItemStore extends EventEmitter {
         }).then((response) => {
             this.emit(ItemConstants.ITEM_FETCH_SUCCESS, response.data);
         }).catch((error) => {
-            console.log(error);
             this.emit(ItemConstants.ITEM_FETCH_FAILED, error.response);
         });
     }
@@ -73,6 +72,19 @@ class ItemStore extends EventEmitter {
             this.emit(ItemConstants.ITEM_DELETE_SUCCESS, response.data);
         }).catch((error) => {
             this.emit(ItemConstants.ITEM_DELETE_FAILED, error.response.data.error);
+        });
+    }
+
+    updateItem(id, data) {
+        axios.put(`/api/v1/items/${id}`, data, {
+            headers: {
+                'Authorization': 'Bearer ' + AuthHelper.getToken(),
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            this.emit(ItemConstants.ITEM_UPDATE_SUCCESS, response.data);
+        }).catch((error) => {
+            this.emit(ItemConstants.ITEM_UPDATE_FAILED, error.response.data.error);
         });
     }
 
@@ -95,6 +107,11 @@ class ItemStore extends EventEmitter {
 
             case ItemConstants.ITEM_DELETE: {
                 this.deleteItem(action.data);
+                break;
+            }
+
+            case ItemConstants.ITEM_UPDATE: {
+                this.updateItem(action.id, action.data);
                 break;
             }
         }
