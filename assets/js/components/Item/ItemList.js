@@ -1,6 +1,6 @@
 import React from 'react';
 import ItemStore from '../../stores/ItemStore';
-import {Breadcrumb, Button, Card, Container, Dimmer, Icon, Image, Input, Pagination, Loader} from 'semantic-ui-react';
+import {Breadcrumb, Button, Card, Container, Dimmer, Icon, Image, Input, Pagination, Loader, Grid} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
@@ -91,25 +91,35 @@ class ItemList extends React.Component {
         return (
             <Container className={"base-container"}>
                 <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
-                <Input
-                    value={this.state.searchValue}
-                    onChange={(e) => {
-                        this.setState({
-                            searchValue: e.target.value
-                        })
-                    }}
-                    icon={<Icon
-                        name="search"
-                        inverted
-                        circular
-                        link
-                        onClick={() => this.updateList()}
-                    />}
-                    placeholder="Search..."
-                    onKeyPress={(e) => this.onKeyPress(e)}
-                    style={{paddingBottom: '10px', width: '70%'}}
-                />
-                <Button as={Link} to={"/items/add"} name={"createItem"} style={{marginLeft: '50px'}}>Add new</Button>
+                <Grid columns={2}>
+                    <Grid.Row>
+                        <Grid.Column width={14}>
+                            <Input
+                                value={this.state.searchValue}
+                                onChange={(e) => {
+                                    this.setState({
+                                        searchValue: e.target.value
+                                    })
+                                }}
+                                icon={<Icon
+                                    name="search"
+                                    inverted
+                                    circular
+                                    link
+                                    onClick={() => this.updateList()}
+                                />}
+                                placeholder="Search..."
+                                onKeyPress={(e) => this.onKeyPress(e)}
+                                style={{paddingBottom: '10px', width: '87%'}}
+                            />
+                        </Grid.Column>
+                        {AuthHelper.isLoggedIn() ?
+                        <Grid.Column width={2}>
+                            <Button as={Link} to={"/items/add"} name={"createItem"} floated='right'>Add new</Button>
+                        </Grid.Column>
+                            : null }
+                    </Grid.Row>
+                </Grid>
                 {this.state.isLoading ? (
                     <Dimmer active inverted>
                         <Loader size='massive'>Loading</Loader>
@@ -121,7 +131,7 @@ class ItemList extends React.Component {
                                 <Card.Group itemsPerRow={4}>
                                     {this.state.items.map((item) =>
                                         <Card key={item.id} href={`/#/items/view/${item.id}`} color={item.user.id === user_id ? 'blue' : 'grey'}>
-                                            <Image src={item.photos.length !== 0 ? item.photos[0].path : defaultImage} />
+                                            <Image src={item.photos.length !== 0 ? item.photos[0].path : defaultImage} height={166}/>
                                             <Card.Content>
                                                 <Card.Header>
                                                     {item.title}

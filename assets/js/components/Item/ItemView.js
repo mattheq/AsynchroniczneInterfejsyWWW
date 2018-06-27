@@ -131,9 +131,9 @@ class ItemView extends React.Component {
             });
         }
 
-        if (typeof this.state.item.item_details.street !== "undefined" && this.state.item.item_details.street !== '') {
+        if (typeof this.state.item.item_details.street !== "undefined" && this.state.item.item_details.street !== '' && this.state.item.item_details.street != null) {
             street = this.state.item.item_details.street;
-            if (typeof this.state.item.item_details.street_number !== "undefined" && this.state.item.item_details.street_number !== '') {
+            if (typeof this.state.item.item_details.street_number !== "undefined" && this.state.item.item_details.street_number !== '' && this.state.item.item_details.street_number != null) {
                 street += ' ' + this.state.item.item_details.street_number;
             }
         }
@@ -203,7 +203,7 @@ class ItemView extends React.Component {
                                     Address details
                                 </Header>
                                 <List>
-                                    <List.Item icon='flag' content={'Country: ' + (this.state.item.item_details.country !== '' ? this.state.item.item_details.country : 'Not provided')} />
+                                    <List.Item icon='flag' content={'Country: ' + ((this.state.item.item_details.country !== '' && this.state.item.item_details.country != null) ? this.state.item.item_details.country : 'Not provided')} />
                                     <List.Item icon='point' content={'City: ' + this.state.item.item_details.city} />
                                     <List.Item icon='road' content={'Street: ' + street} />
                                     <List.Item icon='clock' content={(this.state.item.type === ItemConstants.ITEM_MISSING ? 'Lost around: ' : 'Found around: ') + moment.unix(this.state.item.item_details.daytime).format('LLL')} />
