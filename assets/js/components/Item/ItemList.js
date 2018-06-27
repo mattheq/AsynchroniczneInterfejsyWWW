@@ -5,9 +5,11 @@ import {Link} from 'react-router-dom';
 import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
 import defaultImage from '../../../images/white-image.png';
+import sadPepe from '../../../images/sad_pepe.svg';
 import PaginationHelper from '../../helpers/PaginationHelper';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import qs from "qs";
+import AuthHelper from "../../helpers/AuthHelper";
 
 class ItemList extends React.Component {
 
@@ -84,6 +86,7 @@ class ItemList extends React.Component {
     render() {
         let queryParams = this.props.location.search;
         let pagination = this.state.pagination;
+        let user_id = AuthHelper.getCredentials() ? AuthHelper.getCredentials().user_id : null;
 
         return (
             <Container className={"base-container"}>
@@ -117,7 +120,7 @@ class ItemList extends React.Component {
                             <section>
                                 <Card.Group itemsPerRow={4}>
                                     {this.state.items.map((item) =>
-                                        <Card key={item.id} href={`/#/items/view/${item.id}`} >
+                                        <Card key={item.id} href={`/#/items/view/${item.id}`} color={item.user.id === user_id ? 'blue' : ''}>
                                             <Image src={item.photos.length !== 0 ? item.photos[0].path : defaultImage} />
                                             <Card.Content>
                                                 <Card.Header>
@@ -147,7 +150,10 @@ class ItemList extends React.Component {
                                 )}
                             </section>
                         ) : (
-                            <h1>Emptiness...</h1>
+                            <div align="center">
+                                <Image src={sadPepe} />
+                                <h1>Emptiness...</h1>
+                            </div>
                         )}
                     </section>
                 )}
