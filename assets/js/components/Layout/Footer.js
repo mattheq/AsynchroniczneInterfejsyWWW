@@ -14,13 +14,13 @@ class Footer extends React.Component {
                                 <List link inverted>
                                     <List.Item as='a'>Sitemap</List.Item>
                                     <List.Item as='a'>Contact Us</List.Item>
-                                    <List.Item as='a'>Religious Ceremonies</List.Item>
-                                    <List.Item as='a'>Gazebo Plans</List.Item>
+                                    <List.Item as='a'>Terms</List.Item>
                                 </List>
                             </Grid.Column>
                             <Grid.Column width={10}>
-                                <Header as='h4' inverted>Footer Header</Header>
-                                <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                                <Header as='h4' inverted>Project information</Header>
+                                <p>This project has been made for course 'Asynchroniczne Interfejsy WWW' at University of Technology in Częstochowa</p>
+                                <p>© 2018 Mateusz Grzyb</p>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
