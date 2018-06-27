@@ -22,14 +22,13 @@ export function itemFetch(data = {}) {
     })
 }
 
-//
-// export function itemDelete(data) {
-//     dispatcher.dispatch({
-//         type: AuthConstants.USER_REGISTER,
-//         data,
-//     });
-// }
-//
+export function itemDelete(data) {
+    dispatcher.dispatch({
+        type: ItemConstants.ITEM_DELETE,
+        data,
+    });
+}
+
 // export function itemUpdate(data) {
 //     dispatcher.dispatch({
 //         type: AuthConstants.USER_REFRESH_TOKEN,

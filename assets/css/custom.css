@@ -17,6 +17,19 @@ ul.react-datepicker__time-list {
     padding: 0;
 }
 
+/* IMAGE GALLERY STATIC HEIGHT */
+/*.image-gallery-slides {*/
+    /*text-align: center;*/
+/*}*/
+
+/*.image-gallery-slide {*/
+    /*background: #fff;*/
+/*}*/
+/*.image-gallery-image > img {*/
+    /*width: auto;*/
+    /*height: 350px;*/
+/*}*/
+
 /* HOMEPAGE SEARCH */
 .home-search-section {
     position: relative;
