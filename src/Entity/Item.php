@@ -26,7 +26,10 @@ use App\Controller\CreateItemAction;
  *          "filters"={"search"}
  *     },
  *     collectionOperations={
- *          "get"={"pagination_items_per_page"=12},
+ *          "get"={
+ *              "pagination_items_per_page"=12,
+ *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"
+ *          },
  *          "post"={
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
  *              "method"="POST",
@@ -36,7 +39,9 @@ use App\Controller\CreateItemAction;
  *          }
  *     },
  *     itemOperations={
- *          "get",
+ *          "get"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"
+ *          },
  *          "delete"={
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object.user == user",
  *              "access_control_message"="Sorry, but you are not the owner."

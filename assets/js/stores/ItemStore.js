@@ -6,7 +6,6 @@ import qs from "qs";
 import * as ItemConstants from "../constants/ItemConstants";
 
 class ItemStore extends EventEmitter {
-
     createItem(data) {
         const form = new FormData();
         form.append('title', data.create_item.title);
@@ -34,11 +33,14 @@ class ItemStore extends EventEmitter {
     }
 
     viewItem(id) {
+        let headers = {
+            'Content-Type': 'application/json'
+        };
+        if (AuthHelper.getToken()) {
+            headers.Authorization = 'Bearer ' + AuthHelper.getToken();
+        }
         axios.get(`/api/v1/items/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + AuthHelper.getToken()
-            }
+            headers
         }).then((response) => {
             this.emit(ItemConstants.ITEM_VIEW_SUCCESS, response.data);
         }).catch((error) => {
@@ -47,11 +49,13 @@ class ItemStore extends EventEmitter {
     }
 
     fetchItem(data) {
+        let headers = {};
+        if (AuthHelper.getToken()) {
+            headers.Authorization = 'Bearer ' + AuthHelper.getToken();
+        }
         let queryString = qs.stringify(data);
         axios.get('/api/v1/items' + (queryString.length > 0 ? ('?' + queryString) : ''), {
-            headers: {
-                'Authorization': 'Bearer ' + AuthHelper.getToken()
-            }
+            headers
         }).then((response) => {
             this.emit(ItemConstants.ITEM_FETCH_SUCCESS, response.data);
         }).catch((error) => {

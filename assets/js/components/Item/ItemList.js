@@ -120,7 +120,7 @@ class ItemList extends React.Component {
                             <section>
                                 <Card.Group itemsPerRow={4}>
                                     {this.state.items.map((item) =>
-                                        <Card key={item.id} href={`/#/items/view/${item.id}`} color={item.user.id === user_id ? 'blue' : ''}>
+                                        <Card key={item.id} href={`/#/items/view/${item.id}`} color={item.user.id === user_id ? 'blue' : 'grey'}>
                                             <Image src={item.photos.length !== 0 ? item.photos[0].path : defaultImage} />
                                             <Card.Content>
                                                 <Card.Header>
