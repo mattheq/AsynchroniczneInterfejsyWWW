@@ -22,8 +22,7 @@ class MessageRepository extends ServiceEntityRepository
     public function findUserConversation($user_id, $logged_user)
     {
         return $this->createQueryBuilder('m')
-            ->where('m.from = :user_id or m.to = :user_id')->setParameter('user_id', $user_id)
-            ->andWhere('m.from = :logged_user or m.to = :logged_user')->setParameter('logged_user', $logged_user)
+            ->where('m.from = :user_id and m.to = :logged_user or m.to = :user_id and m.from = :logged_user')->setParameters(['user_id' => $user_id, 'logged_user' => $logged_user])
             ->orderBy('m.created_at', 'desc')
             ->getQuery()
             ->setMaxResults(10)
