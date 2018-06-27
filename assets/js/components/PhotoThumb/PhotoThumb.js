@@ -38,10 +38,6 @@ class PhotoThumb extends React.Component {
             return null;
         }
 
-        if (loading) {
-            return <p>loading...</p>;
-        }
-
         return (
             <img src={thumb}
                      alt={photo.name}

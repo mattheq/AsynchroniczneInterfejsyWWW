@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Breadcrumb, Segment, Container, Form, Label, TextArea } from 'semantic-ui-react';
+import { Button, Breadcrumb, Segment, Container, Form, Label, Icon } from 'semantic-ui-react';
 import ItemStore from '../../stores/ItemStore';
 import { Formik, Field } from 'formik';
 import Yup from 'yup';
@@ -125,7 +125,9 @@ class ItemForm extends React.Component {
                                                     return <p>Try dragging a photo here!</p>
                                                 }
 
-                                                return values.files.map((photo, i) => (<PhotoThumb key={i} photo={photo} />));
+                                                return values.files.map((photo, i) => (
+                                                    <PhotoThumb key={i} photo={photo} />
+                                                ));
                                             }}
                                         </Dropzone>
                                     </div>

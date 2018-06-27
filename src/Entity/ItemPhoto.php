@@ -17,6 +17,22 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *          "normalization_context"={
  *              "groups"={"item"}
  *          }
+ *     },
+ *     collectionOperations={
+ *          "get"={
+ *              "pagination_items_per_page"=12,
+ *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"
+ *          },
+ *          "delete"={
+ *              "method"="DELETE",
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')  and object.item.user == user",
+ *              "access_control_message"="Sorry, but you are not the owner."
+ *          }
  *     }
  * )
  */
@@ -77,7 +93,7 @@ class ItemPhoto
      *
      * @ORM\ManyToOne(targetEntity="Item", inversedBy="photos")
      */
-    private $item;
+    public $item;
 
     /**
      * @var string

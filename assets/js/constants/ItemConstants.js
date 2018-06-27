@@ -10,5 +10,9 @@ export const ITEM_FETCH = "ITEM_FETCH";
 export const ITEM_FETCH_SUCCESS = "ITEM_FETCH_SUCCESS";
 export const ITEM_FETCH_FAILED = "ITEM_FETCH_FAILED";
 
+export const ITEM_DELETE = "ITEM_DELETE";
+export const ITEM_DELETE_SUCCESS = "ITEM_DELETE_SUCCESS";
+export const ITEM_DELETE_FAILED = "ITEM_DELETE_FAILED";
+
 export const ITEM_MISSING = 0;
 export const ITEM_FOUND = 1;

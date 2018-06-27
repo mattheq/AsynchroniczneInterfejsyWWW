@@ -64,6 +64,18 @@ class ItemStore extends EventEmitter {
         });
     }
 
+    deleteItem(id) {
+        axios.delete(`/api/v1/items/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + AuthHelper.getToken()
+            }
+        }).then((response) => {
+            this.emit(ItemConstants.ITEM_DELETE_SUCCESS, response.data);
+        }).catch((error) => {
+            this.emit(ItemConstants.ITEM_DELETE_FAILED, error.response.data.error);
+        });
+    }
+
     handleActions(action) {
         switch (action.type) {
             case ItemConstants.ITEM_CREATE: {
@@ -78,6 +90,11 @@ class ItemStore extends EventEmitter {
 
             case ItemConstants.ITEM_FETCH: {
                 this.fetchItem(action.data);
+                break;
+            }
+
+            case ItemConstants.ITEM_DELETE: {
+                this.deleteItem(action.data);
                 break;
             }
         }

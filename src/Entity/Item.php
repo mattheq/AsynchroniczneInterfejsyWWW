@@ -16,7 +16,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Controller\CreateItemAction;
 
 /**
- * TODO: Add item photo and address details
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
  * @ApiResource(
  *     attributes={
@@ -43,7 +42,8 @@ use App\Controller\CreateItemAction;
  *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object.user == user",
+ *              "method"="DELETE",
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')  and object.user == user",
  *              "access_control_message"="Sorry, but you are not the owner."
  *          },
  *          "put"={
@@ -117,11 +117,11 @@ class Item
      * @ORM\ManyToOne(targetEntity="User", inversedBy="items", cascade={"persist"})
      * @Groups({"item"})
      */
-    private $user;
+    public $user;
 
     /**
      * @var ItemPhoto[]
-     * @ORM\OneToMany(targetEntity="ItemPhoto", mappedBy="item", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ItemPhoto", mappedBy="item", cascade={"persist", "remove"})
      * @Groups({"item"})
      */
     private $photos;
@@ -135,7 +135,7 @@ class Item
 
     /**
      * @var ItemDetails
-     * @ORM\OneToOne(targetEntity="ItemDetails", inversedBy="item", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="ItemDetails", inversedBy="item", cascade={"persist", "remove"})
      * @Groups({"item"})
      */
     private $item_details;
@@ -298,6 +298,14 @@ class Item
      * @return ItemDetails
      */
     public function getItemDetails()
+    {
+        return $this->item_details;
+    }
+
+    /**
+     * @return ItemDetails
+     */
+    public function getItem_details()
     {
         return $this->item_details;
     }
