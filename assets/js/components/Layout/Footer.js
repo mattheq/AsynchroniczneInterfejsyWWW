@@ -20,7 +20,7 @@ class Footer extends React.Component {
                             <Grid.Column width={10}>
                                 <Header as='h4' inverted>Project information</Header>
                                 <p>This project has been made for course 'Asynchroniczne Interfejsy WWW' at University of Technology in Częstochowa</p>
-                                <p>© 2018 Mateusz Grzyb</p>
+                                <p>© {new Date().getFullYear()} Mateusz Grzyb</p>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
