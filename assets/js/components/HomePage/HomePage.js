@@ -2,7 +2,7 @@ import React from 'react';
 import AuthHelper from '../../helpers/AuthHelper';
 import {Button, Container, Divider, Grid, Header, Icon, Input, Label} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
-import {Trans} from 'react-i18next';
+import {Trans, withNamespaces} from 'react-i18next';
 import homeBackground from '../../../images/home_background.jpg';
 
 /* TODO: change input to search bar with latest 10-20 items and category lost/found */
@@ -74,4 +74,4 @@ class HomePage extends React.Component {
     }
 }
 
-export default HomePage
+export default withNamespaces('translation')(HomePage)
