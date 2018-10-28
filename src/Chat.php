@@ -11,7 +11,6 @@ use Ratchet\MessageComponentInterface;
 /**
  * Class Chat
  * @package App
- * TODO: client: onMessage check jwt token and receiver_id
  */
 class Chat implements MessageComponentInterface
 {

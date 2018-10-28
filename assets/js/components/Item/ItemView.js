@@ -14,7 +14,6 @@ import * as ChatConstants from "../../constants/ChatConstants";
 import ChatStore from "../../stores/ChatStore";
 import PageNotFound from "../PageNotFound/PageNotFound";
 
-//TODO: get item attributes when mounting, tip: this.props.match.params.id <- id from url
 class ItemView extends React.Component {
     constructor(props) {
         super(props);
