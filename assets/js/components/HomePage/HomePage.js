@@ -2,6 +2,7 @@ import React from 'react';
 import AuthHelper from '../../helpers/AuthHelper';
 import {Button, Container, Divider, Grid, Header, Icon, Input, Label} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+import {Trans} from 'react-i18next';
 import homeBackground from '../../../images/home_background.jpg';
 
 /* TODO: change input to search bar with latest 10-20 items and category lost/found */
@@ -40,7 +41,7 @@ class HomePage extends React.Component {
                     <img src={homeBackground} />
                 </div>
                     <Container className={"home-search-bar"} textAlign={"center"}>
-                        <Header size={"huge"} inverted>What are you looking for?</Header>
+                        <Header size={"huge"} inverted><Trans>What are you looking for?</Trans></Header>
                         <Input
                             value={this.state.searchValue}
                             onChange={(e) => {
