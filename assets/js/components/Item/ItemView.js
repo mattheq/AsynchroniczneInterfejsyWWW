@@ -12,6 +12,7 @@ import moment from 'moment';
 import * as ChatActions from "../../actions/ChatActions";
 import * as ChatConstants from "../../constants/ChatConstants";
 import ChatStore from "../../stores/ChatStore";
+import PageNotFound from "../PageNotFound/PageNotFound";
 
 //TODO: get item attributes when mounting, tip: this.props.match.params.id <- id from url
 class ItemView extends React.Component {
@@ -46,6 +47,7 @@ class ItemView extends React.Component {
             },
             loading: true,
             showChat: false,
+            error: false
         };
 
         this.handleItemViewSuccess = this.handleItemViewSuccess.bind(this);
@@ -92,6 +94,9 @@ class ItemView extends React.Component {
     }
 
     handleItemViewFailed(error) {
+        this.setState({
+            error: true
+        });
         console.log(error);
     }
 
@@ -136,6 +141,12 @@ class ItemView extends React.Component {
             if (typeof this.state.item.item_details.street_number !== "undefined" && this.state.item.item_details.street_number !== '' && this.state.item.item_details.street_number != null) {
                 street += ' ' + this.state.item.item_details.street_number;
             }
+        }
+
+        if (this.state.error) {
+            return (
+                <PageNotFound/>
+            )
         }
 
         return (
