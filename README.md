@@ -5,8 +5,7 @@ at University of Technology in Częstochowa
 
 ## About
 
-Main idea for this project was to create online lost property office, where users can add items they lost/found 
-and allow them to contact with each others. I've decided to create this project mainly to learn ReactJs/Symfony4 and how to use websockets.
+Simple CRUD app with chat functionality. Project was created mainly to learn ReactJS/Symfony4 and websockets.
 
 
 #### Built With
