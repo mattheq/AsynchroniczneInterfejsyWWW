@@ -33,12 +33,12 @@ final class CreateItemAction extends Controller
         $form = $this->factory->create(CreateItemType::class, $item);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->doctrine->getManager();
+            $entityManager = $this->doctrine->getManager();
             $user = $this->getUser();
             $item->setUser($user);
             $item->upload();
-            $em->persist($item);
-            $em->flush();
+            $entityManager->persist($item);
+            $entityManager->flush();
             $item->setFiles(null);
 
             return $item;
