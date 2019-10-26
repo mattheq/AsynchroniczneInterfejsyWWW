@@ -140,8 +140,8 @@
     "psr/log": {
         "version": "1.0.2"
     },
-    "psr/simple-cache": {
-        "version": "1.0.1"
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "ratchet/rfc6455": {
         "version": "0.2.4"
@@ -311,9 +311,6 @@
             "ref": "cda8b550123383d25827705d05a42acf6819fe4e"
         }
     },
-    "symfony/security": {
-        "version": "v4.0.6"
-    },
     "symfony/security-bundle": {
         "version": "3.3",
         "recipe": {
@@ -328,15 +325,6 @@
     },
     "symfony/templating": {
         "version": "v4.1.1"
-    },
-    "symfony/translation": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "6bcd6c570c017ea6ae5a7a6a027c929fd3542cd8"
-        }
     },
     "symfony/twig-bridge": {
         "version": "v4.0.6"
