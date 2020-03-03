@@ -28,6 +28,7 @@ Encore
 
     .addEntry('js/app', './assets/js/app.js')
     .addStyleEntry('css/custom', './assets/css/custom.css')
+    .addLoader({ test: /\.mp3$/, loader: 'file-loader' })
 ;
 
 module.exports = Encore.getWebpackConfig();
