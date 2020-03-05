@@ -9,15 +9,7 @@ class Footer extends React.Component {
                 <Container>
                     <Grid divided inverted stackable>
                         <Grid.Row>
-                            <Grid.Column width={3}>
-                                <Header inverted as='h4' content='About' />
-                                <List link inverted>
-                                    <List.Item as='a'>Sitemap</List.Item>
-                                    <List.Item as='a'>Contact Us</List.Item>
-                                    <List.Item as='a'>Terms</List.Item>
-                                </List>
-                            </Grid.Column>
-                            <Grid.Column width={10}>
+                            <Grid.Column>
                                 <Header as='h4' inverted>Project information</Header>
                                 <p>This project has been made for course 'Asynchroniczne Interfejsy WWW' at University of Technology in Częstochowa</p>
                                 <p>© {new Date().getFullYear()} Mateusz Grzyb</p>
