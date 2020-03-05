@@ -91,9 +91,9 @@ class ItemList extends React.Component {
         return (
             <Container className={"base-container"}>
                 <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
-                <Grid columns={2}>
+                <Grid columns={AuthHelper.isLoggedIn() ? 2 : 1}>
                     <Grid.Row>
-                        <Grid.Column width={14}>
+                        <Grid.Column width={AuthHelper.isLoggedIn() ? 14 : 18}>
                             <Input
                                 value={this.state.searchValue}
                                 onChange={(e) => {
