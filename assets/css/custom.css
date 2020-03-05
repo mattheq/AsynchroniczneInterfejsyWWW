@@ -3,6 +3,10 @@
     display: flex !important;
 }
 
+.ui.modal {
+    margin-top: 0 !important;
+}
+
 .base-container {
     min-height: 677px;
 }
@@ -66,7 +70,6 @@ div.ui.breadcrumb {
 }
 
 /* CHAT */
-
 div.sc-launcher {
     z-index: 10;
 }
