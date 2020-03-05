@@ -31,7 +31,7 @@ class App extends React.Component {
         return (
             <ContextProvider>
                 <HashRouter>
-                    <div>
+                    <div style={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
                         <Route component={Navbar} />
                         <Switch>
                             <Route exact path="/" component={HomePage}/>

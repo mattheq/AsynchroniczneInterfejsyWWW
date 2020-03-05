@@ -8,7 +8,7 @@
 }
 
 .base-container {
-    min-height: 677px;
+    flex: 1;
 }
 
 div.ui.container.base-container {
