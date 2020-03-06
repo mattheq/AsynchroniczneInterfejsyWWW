@@ -3,7 +3,6 @@
 .env
 /public/bundles/
 /public/media/
-/public/.htaccess
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
