@@ -14,7 +14,7 @@ class Chat extends React.Component {
         this.state = {
             messageList: [],
             isOpen: true,
-            conn: new WebSocket(`ws://${location.hostname}:8080?user_id=${AuthHelper.getCredentials().user_id}`)
+            conn: new WebSocket(`wss://${location.hostname}:8080?user_id=${AuthHelper.getCredentials().user_id}`)
         };
 
         this._sendMessage = this._sendMessage.bind(this);
