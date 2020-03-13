@@ -57,8 +57,7 @@
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts",
-            "php bin/console sockets:start-chat"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
