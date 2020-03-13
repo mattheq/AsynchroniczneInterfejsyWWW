@@ -1,4 +1,6 @@
 {
+    "name": "Lost and found app",
+    "description": "Lost and found app",
     "type": "project",
     "license": "proprietary",
     "require": {
@@ -52,7 +54,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "php bin/console sockets:start-chat"
         },
         "post-install-cmd": [
             "@auto-scripts"
