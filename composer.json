@@ -54,11 +54,11 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "php bin/console sockets:start-chat"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "php bin/console sockets:start-chat"
         ],
         "post-update-cmd": [
             "@auto-scripts"
