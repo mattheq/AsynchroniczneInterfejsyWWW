@@ -185,9 +185,20 @@ class ItemDetails
         return $this->street_number;
     }
 
+    /**
+     * @return string
+     */
     public function getStreet_number()
     {
         return $this->street_number;
+    }
+
+    /**
+     * @param string $street_number
+     */
+    public function setStreet_number(string $street_number): void
+    {
+        $this->street_number = $street_number;
     }
 
     /**

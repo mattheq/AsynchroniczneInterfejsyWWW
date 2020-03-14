@@ -15,9 +15,9 @@ export function itemView(data) {
     })
 }
 
-export function itemFetch(data = {}) {
+export function itemsFetch(data = {}) {
     dispatcher.dispatch({
-        type: ItemConstants.ITEM_FETCH,
+        type: ItemConstants.ITEMS_FETCH,
         data
     })
 }

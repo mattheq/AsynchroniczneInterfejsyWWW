@@ -1,4 +1,5 @@
 import React from 'react';
+import ItemListSearchBar from './ItemListSearchBar.js';
 import ItemStore from '../../stores/ItemStore';
 import {Breadcrumb, Button, Card, Container, Dimmer, Icon, Image, Input, Pagination, Loader, Grid} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
@@ -20,32 +21,31 @@ class ItemList extends React.Component {
             items: [],
             pagination: {},
             isLoading: true,
-            activePage: 1,
-            searchValue: qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).search
+            activePage: 1
         };
 
-        this.handleItemFetchSuccess = this.handleItemFetchSuccess.bind(this);
-        this.handleItemFetchFailed = this.handleItemFetchFailed.bind(this);
+        this.handleItemsFetchSuccess = this.handleItemsFetchSuccess.bind(this);
+        this.handleItemsFetchFailed = this.handleItemsFetchFailed.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
-        this.onKeyPress = this.onKeyPress.bind(this);
+        this.updateList = this.updateList.bind(this);
     }
 
     componentWillMount() {
-        ItemStore.on(ItemConstants.ITEM_FETCH_SUCCESS, this.handleItemFetchSuccess);
-        ItemStore.on(ItemConstants.ITEM_FETCH_FAILED, this.handleItemFetchFailed);
+        ItemStore.on(ItemConstants.ITEMS_FETCH_SUCCESS, this.handleItemsFetchSuccess);
+        ItemStore.on(ItemConstants.ITEMS_FETCH_FAILED, this.handleItemsFetchFailed);
     }
 
     componentWillUnmount() {
-        ItemStore.removeListener(ItemConstants.ITEM_FETCH_SUCCESS, this.handleItemFetchSuccess);
-        ItemStore.removeListener(ItemConstants.ITEM_FETCH_FAILED, this.handleItemFetchFailed);
+        ItemStore.removeListener(ItemConstants.ITEMS_FETCH_SUCCESS, this.handleItemsFetchSuccess);
+        ItemStore.removeListener(ItemConstants.ITEMS_FETCH_FAILED, this.handleItemsFetchFailed);
     }
 
     componentDidMount() {
         let searchString = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
-        ItemActions.itemFetch(searchString);
+        ItemActions.itemsFetch(searchString);
     }
 
-    handleItemFetchSuccess(data) {
+    handleItemsFetchSuccess(data) {
         this.setState({
             items: data['hydra:member'],
             pagination: data['hydra:view'],
@@ -53,7 +53,7 @@ class ItemList extends React.Component {
         });
     }
 
-    handleItemFetchFailed(error) {
+    handleItemsFetchFailed(error) {
         console.log(error);
     }
 
@@ -64,19 +64,13 @@ class ItemList extends React.Component {
                 activePage: data.activePage
             });
             let searchString = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
-            ItemActions.itemFetch({ page: data.activePage, search: searchString.search})
+            ItemActions.itemsFetch({ page: data.activePage, search: searchString.search})
         }
     }
 
-    onKeyPress(e) {
-        if ('Enter' === e.key) {
-            this.updateList();
-        }
-    }
-
-    updateList() {
-        ItemActions.itemFetch({page: this.state.activePage, search: this.state.searchValue});
-        let searchQuerry = this.state.searchValue === '' ? '' : '?search=' + this.state.searchValue
+    updateList(searchValue) {
+        ItemActions.itemsFetch({page: this.state.activePage, search: searchValue});
+        let searchQuerry = searchValue === '' ? '' : `?search=${searchValue}`
         this.props.history.push({
             pathname: this.props.location.pathname,
             search: searchQuerry
@@ -92,33 +86,7 @@ class ItemList extends React.Component {
             <Container className={"base-container"}>
                 <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
                 <Grid columns={AuthHelper.isLoggedIn() ? 2 : 1}>
-                    <Grid.Row>
-                        <Grid.Column width={AuthHelper.isLoggedIn() ? 14 : 18}>
-                            <Input
-                                value={this.state.searchValue}
-                                onChange={(e) => {
-                                    this.setState({
-                                        searchValue: e.target.value
-                                    })
-                                }}
-                                icon={<Icon
-                                    name="search"
-                                    inverted
-                                    circular
-                                    link
-                                    onClick={() => this.updateList()}
-                                />}
-                                placeholder="Search..."
-                                onKeyPress={(e) => this.onKeyPress(e)}
-                                style={{paddingBottom: '10px', width: '87%'}}
-                            />
-                        </Grid.Column>
-                        {AuthHelper.isLoggedIn() ?
-                        <Grid.Column width={2}>
-                            <Button as={Link} to={"/items/add"} name={"createItem"} floated='right'>Add new</Button>
-                        </Grid.Column>
-                            : null }
-                    </Grid.Row>
+                    <ItemListSearchBar updateList={this.updateList}/>
                 </Grid>
                 {this.state.isLoading ? (
                     <Dimmer active inverted>

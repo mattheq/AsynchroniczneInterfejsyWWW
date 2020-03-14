@@ -27,7 +27,6 @@ class AuthStore extends EventEmitter {
         }).then((response) => {
             if (response.data.token && response.data.refresh_token) {
                 this.emit(AuthConstants.USER_LOGIN_SUCCESS, {jwtToken: response.data.token, refreshToken: response.data.refresh_token});
-                //TODO: add default barer header
             } else {
                 this.emit(AuthConstants.USER_LOGIN_FAILED, 'Something went wrong, please try again.');
             }
