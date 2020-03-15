@@ -1,15 +1,15 @@
 import React from 'react';
-import TextInput from './Input/TextInput.js';
-import RadioInput from './Input/RadioInput.js';
-import PhotoInput from './Input/PhotoInput.js';
-import AdditionalInfoInput from './Input/AdditionalInfoInput.js';
+import TextInput from '../Input/TextInput.js';
+import RadioInput from '../Input/RadioInput.js';
+import PhotoInput from '../Input/PhotoInput.js';
+import AdditionalInfoInput from '../Input/AdditionalInfoInput.js';
 import { Formik } from 'formik';
 import Yup from 'yup';
 import { Button, Breadcrumb, Segment, Container, Form } from 'semantic-ui-react';
-import ItemStore from '../../../stores/ItemStore';
-import * as ItemActions from '../../../actions/ItemActions';
-import * as ItemConstants from '../../../constants/ItemConstants';
-import BreadcrumbHelper from "../../../helpers/BreadcrumbHelper";
+import ItemStore from '../../stores/ItemStore';
+import * as ItemActions from '../../actions/ItemActions';
+import * as ItemConstants from '../../constants/ItemConstants';
+import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import moment from 'moment';
 
 class ItemForm extends React.Component {
@@ -72,8 +72,8 @@ class ItemForm extends React.Component {
 
                         render={({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
                             <Form onSubmit={handleSubmit}>
-                                <TextInput name={"title"} touched={touched.title} errors={errors.title} label={"Title"}/>
-                                <TextInput name={"description"} touched={touched.description} errors={errors.description} label={"Description"}/>
+                                <TextInput type={"text"} name={"title"} touched={touched.title} errors={errors.title} label={"Title"}/>
+                                <TextInput type={"text"} name={"description"} touched={touched.description} errors={errors.description} label={"Description"}/>
                                 <div className={"field"}>
                                     <label>Item type</label>
                                 </div>

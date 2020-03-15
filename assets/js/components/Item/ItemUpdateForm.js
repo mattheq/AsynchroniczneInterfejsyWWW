@@ -1,14 +1,14 @@
 import React from 'react';
-import TextInput from './Input/TextInput.js';
-import RadioInput from './Input/RadioInput.js';
-import AdditionalInfoInput from './Input/AdditionalInfoInput.js';
+import TextInput from '../Input/TextInput.js';
+import RadioInput from '../Input/RadioInput.js';
+import AdditionalInfoInput from '../Input/AdditionalInfoInput.js';
 import { Button, Breadcrumb, Segment, Container, Form } from 'semantic-ui-react';
-import ItemStore from '../../../stores/ItemStore';
+import ItemStore from '../../stores/ItemStore';
 import { Formik } from 'formik';
 import Yup from 'yup';
-import * as ItemActions from '../../../actions/ItemActions';
-import * as ItemConstants from '../../../constants/ItemConstants';
-import BreadcrumbHelper from "../../../helpers/BreadcrumbHelper";
+import * as ItemActions from '../../actions/ItemActions';
+import * as ItemConstants from '../../constants/ItemConstants';
+import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import moment from 'moment';
 
 class ItemUpdateForm extends React.Component {
@@ -130,8 +130,8 @@ class ItemUpdateForm extends React.Component {
 
                             render={({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
                                 <Form onSubmit={handleSubmit}>
-                                    <TextInput name={"title"} touched={touched.title} errors={errors.title} label={"Title"}/>
-                                    <TextInput name={"description"} touched={touched.description} errors={errors.description} label={"Description"}/>
+                                    <TextInput type={"text"} name={"title"} touched={touched.title} errors={errors.title} label={"Title"}/>
+                                    <TextInput type={"text"} name={"description"} touched={touched.description} errors={errors.description} label={"Description"}/>
                                     <RadioInput name={"type"} value={0} type={values.type} setFieldValue={setFieldValue} label={"Lost"}/>
                                     <RadioInput name={"type"} value={1} type={values.type} setFieldValue={setFieldValue} label={"Found"}/>
                                     <AdditionalInfoInput touched={touched} errors={errors} daytime={values.daytime} setFieldValue={setFieldValue} label={"Additional information"}/>

@@ -10,7 +10,7 @@ class TextInput extends React.Component {
         return (
             <div className={"field " + (this.props.touched && this.props.errors && "error")}>
                 <label>{this.props.label}</label>
-                <Field type="text" name={this.props.name} />
+                <Field type={this.props.type} name={this.props.name} />
                 {this.props.touched && this.props.errors && <div className="ui basic red pointing prompt label">{this.props.errors}</div>}
             </div>
         );

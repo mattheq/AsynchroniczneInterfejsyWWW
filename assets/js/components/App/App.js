@@ -8,8 +8,8 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 
 import Footer from '../Layout/Footer';
 import HomePage from '../HomePage/HomePage';
-import ItemForm from '../Item/Form/ItemForm';
-import ItemUpdateForm from '../Item/Form/ItemUpdateForm';
+import ItemForm from '../Item/ItemForm';
+import ItemUpdateForm from '../Item/ItemUpdateForm';
 import ItemList from '../Item/ItemList';
 import ItemView from '../Item/ItemView';
 import Login from '../Login/Login';

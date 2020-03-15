@@ -1,7 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import { Segment, Label } from 'semantic-ui-react';
-import PhotoThumb from "../../../PhotoThumb/PhotoThumb";
+import PhotoThumb from "../PhotoThumb/PhotoThumb";
 
 const dropzoneStyle = {
     width: "100%",
