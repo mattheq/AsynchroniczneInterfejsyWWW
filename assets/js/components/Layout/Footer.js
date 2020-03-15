@@ -1,6 +1,6 @@
 import React from 'react';
-import {Segment, Container, Grid, Header, List} from 'semantic-ui-react';
-//TODO: create proper footer
+import {Segment, Container, Grid, Header} from 'semantic-ui-react';
+
 class Footer extends React.Component {
 
     render() {

@@ -15,11 +15,11 @@ class RegistrationModal extends React.Component {
     }
 
     componentWillMount() {
-        AuthStore.on(AuthConstants.USER_REGISTER_SUCCESS, this.handleUserRegisterSuccess);
+        AuthStore.on(AuthConstants.USER_LOGIN_SUCCESS, this.handleUserRegisterSuccess);
     }
 
     componentWillUnmount() {
-        AuthStore.removeListener(AuthConstants.USER_REGISTER_SUCCESS, this.handleUserRegisterSuccess);
+        AuthStore.removeListener(AuthConstants.USER_LOGIN_SUCCESS, this.handleUserRegisterSuccess);
     }
 
     handleUserRegisterSuccess() {

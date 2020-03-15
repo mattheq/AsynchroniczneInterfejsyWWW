@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Segment, Container, Form } from 'semantic-ui-react';
+import TextInput from '../Input/TextInput.js';
+import { Button, Form } from 'semantic-ui-react';
 import AuthStore from '../../stores/AuthStore';
-import { Formik, Field } from 'formik';
+import { Formik } from 'formik';
 import Yup from 'yup';
 import * as AuthActions from '../../actions/AuthActions';
 import * as AuthConstants from '../../constants/AuthConstants';
@@ -63,16 +64,8 @@ class LoginForm extends React.Component {
 
                 render={({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting}) => (
                     <Form onSubmit={handleSubmit}>
-                        <div className={"field " + (touched._username && errors._username && "error")}>
-                            <label>Email</label>
-                            <Field type="email" name="_username" />
-                            {touched._username && errors._username && <div className="ui basic red pointing prompt label">{errors._username}</div>}
-                        </div>
-                        <div className={"field " + (touched._password && errors._password && "error")}>
-                            <label>Password</label>
-                            <Field type="password" name="_password" />
-                            {touched._password && errors._password && <div className="ui basic red pointing prompt label">{errors._password}</div>}
-                        </div>
+                        <TextInput type={"email"} name={"_username"} touched={touched._username} errors={errors._username} label={"Email"} />
+                        <TextInput type={"password"} name={"_password"} touched={touched._password} errors={errors._password} label={"Password"} />
                         {this.state.error ? (
                             <div className="ui negative message">
                                 <div className="header">

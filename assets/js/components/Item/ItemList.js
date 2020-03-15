@@ -1,12 +1,13 @@
 import React from 'react';
+import ItemListSearchBar from './ItemListSearchBar.js';
+import ItemCard from './ItemCard.js';
+import ItemPagination from './ItemPagination.js';
 import ItemStore from '../../stores/ItemStore';
-import {Breadcrumb, Button, Card, Container, Dimmer, Icon, Image, Input, Pagination, Loader, Grid} from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
+import {Breadcrumb, Card, Container, Dimmer, Image, Loader, Grid} from 'semantic-ui-react';
 import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
 import defaultImage from '../../../images/white-image.png';
 import sadPepe from '../../../images/sad_pepe.svg';
-import PaginationHelper from '../../helpers/PaginationHelper';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import qs from "qs";
 import AuthHelper from "../../helpers/AuthHelper";
@@ -20,32 +21,31 @@ class ItemList extends React.Component {
             items: [],
             pagination: {},
             isLoading: true,
-            activePage: 1,
-            searchValue: qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).search
+            activePage: 1
         };
 
-        this.handleItemFetchSuccess = this.handleItemFetchSuccess.bind(this);
-        this.handleItemFetchFailed = this.handleItemFetchFailed.bind(this);
+        this.handleItemsFetchSuccess = this.handleItemsFetchSuccess.bind(this);
+        this.handleItemsFetchFailed = this.handleItemsFetchFailed.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
-        this.onKeyPress = this.onKeyPress.bind(this);
+        this.updateList = this.updateList.bind(this);
     }
 
     componentWillMount() {
-        ItemStore.on(ItemConstants.ITEM_FETCH_SUCCESS, this.handleItemFetchSuccess);
-        ItemStore.on(ItemConstants.ITEM_FETCH_FAILED, this.handleItemFetchFailed);
+        ItemStore.on(ItemConstants.ITEMS_FETCH_SUCCESS, this.handleItemsFetchSuccess);
+        ItemStore.on(ItemConstants.ITEMS_FETCH_FAILED, this.handleItemsFetchFailed);
     }
 
     componentWillUnmount() {
-        ItemStore.removeListener(ItemConstants.ITEM_FETCH_SUCCESS, this.handleItemFetchSuccess);
-        ItemStore.removeListener(ItemConstants.ITEM_FETCH_FAILED, this.handleItemFetchFailed);
+        ItemStore.removeListener(ItemConstants.ITEMS_FETCH_SUCCESS, this.handleItemsFetchSuccess);
+        ItemStore.removeListener(ItemConstants.ITEMS_FETCH_FAILED, this.handleItemsFetchFailed);
     }
 
     componentDidMount() {
         let searchString = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
-        ItemActions.itemFetch(searchString);
+        ItemActions.itemsFetch(searchString);
     }
 
-    handleItemFetchSuccess(data) {
+    handleItemsFetchSuccess(data) {
         this.setState({
             items: data['hydra:member'],
             pagination: data['hydra:view'],
@@ -53,7 +53,7 @@ class ItemList extends React.Component {
         });
     }
 
-    handleItemFetchFailed(error) {
+    handleItemsFetchFailed(error) {
         console.log(error);
     }
 
@@ -64,19 +64,13 @@ class ItemList extends React.Component {
                 activePage: data.activePage
             });
             let searchString = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
-            ItemActions.itemFetch({ page: data.activePage, search: searchString.search})
+            ItemActions.itemsFetch({ page: data.activePage, search: searchString.search})
         }
     }
 
-    onKeyPress(e) {
-        if ('Enter' === e.key) {
-            this.updateList();
-        }
-    }
-
-    updateList() {
-        ItemActions.itemFetch({page: this.state.activePage, search: this.state.searchValue});
-        let searchQuerry = this.state.searchValue === '' ? '' : '?search=' + this.state.searchValue
+    updateList(searchValue) {
+        ItemActions.itemsFetch({page: this.state.activePage, search: searchValue});
+        let searchQuerry = searchValue == null ? '' : `?search=${searchValue}`
         this.props.history.push({
             pathname: this.props.location.pathname,
             search: searchQuerry
@@ -84,89 +78,44 @@ class ItemList extends React.Component {
     }
 
     render() {
-        let queryParams = this.props.location.search;
-        let pagination = this.state.pagination;
         let user_id = AuthHelper.getCredentials() ? AuthHelper.getCredentials().user_id : null;
+        let listContent = <div align="center"><Image src={sadPepe} /><h1>Emptiness...</h1></div>;
+
+        if (this.state.isLoading) {
+            return (
+                <Container className={"base-container"}>
+                    <Dimmer active inverted>
+                        <Loader size='massive'>Loading</Loader>
+                    </Dimmer>
+                </Container>
+            )
+        }
+
+        if (this.state.items.length > 0) {
+            listContent =
+            <Card.Group itemsPerRow={4}>
+                {this.state.items.map((item) =>
+                    <ItemCard
+                        key={item.id}
+                        id={item.id}
+                        color={item.user.id === user_id ? 'blue' : 'grey'}
+                        image={item.photos.length !== 0 ? item.photos[0].path : defaultImage}
+                        title={item.title}
+                        type={ItemConstants.ITEM_MISSING === item.type ? 'Lost' : 'Found'}
+                        description={item.description}
+                    />
+                )}
+            </Card.Group>;
+        }
 
         return (
             <Container className={"base-container"}>
                 <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
                 <Grid columns={AuthHelper.isLoggedIn() ? 2 : 1}>
-                    <Grid.Row>
-                        <Grid.Column width={AuthHelper.isLoggedIn() ? 14 : 18}>
-                            <Input
-                                value={this.state.searchValue}
-                                onChange={(e) => {
-                                    this.setState({
-                                        searchValue: e.target.value
-                                    })
-                                }}
-                                icon={<Icon
-                                    name="search"
-                                    inverted
-                                    circular
-                                    link
-                                    onClick={() => this.updateList()}
-                                />}
-                                placeholder="Search..."
-                                onKeyPress={(e) => this.onKeyPress(e)}
-                                style={{paddingBottom: '10px', width: '87%'}}
-                            />
-                        </Grid.Column>
-                        {AuthHelper.isLoggedIn() ?
-                        <Grid.Column width={2}>
-                            <Button as={Link} to={"/items/add"} name={"createItem"} floated='right'>Add new</Button>
-                        </Grid.Column>
-                            : null }
-                    </Grid.Row>
+                    <ItemListSearchBar updateList={this.updateList}/>
                 </Grid>
-                {this.state.isLoading ? (
-                    <Dimmer active inverted>
-                        <Loader size='massive'>Loading</Loader>
-                    </Dimmer>
-                ) : (
-                    <section>
-                        {this.state.items.length > 0 ? (
-                            <section>
-                                <Card.Group itemsPerRow={4}>
-                                    {this.state.items.map((item) =>
-                                        <Card key={item.id} href={`/#/items/view/${item.id}`} color={item.user.id === user_id ? 'blue' : 'grey'}>
-                                            <Image src={item.photos.length !== 0 ? item.photos[0].path : defaultImage} height={166}/>
-                                            <Card.Content>
-                                                <Card.Header>
-                                                    {item.title}
-                                                </Card.Header>
-                                                <Card.Meta>
-                                                    {ItemConstants.ITEM_MISSING === item.type ? 'Missing' : 'Found'}
-                                                </Card.Meta>
-                                                <Card.Description>
-                                                    {item.description}
-                                                </Card.Description>
-                                            </Card.Content>
-                                        </Card>
-                                    )}
-                                </Card.Group>
-                                {typeof pagination === "undefined" || PaginationHelper.getTotalPages(pagination['hydra:last']) === 1 ? null : (
-                                    <Container textAlign='center'>
-                                        <Pagination
-                                            defaultActivePage={this.state.activePage}
-                                            totalPages={PaginationHelper.getTotalPages(pagination['hydra:last'])}
-                                            onPageChange={(e, data) => this.handlePageChange(e, data)}
-                                            firstItem={null}
-                                            lastItem={null}
-                                            pointing
-                                            secondary/>
-                                    </Container>
-                                )}
-                            </section>
-                        ) : (
-                            <div align="center">
-                                <Image src={sadPepe} />
-                                <h1>Emptiness...</h1>
-                            </div>
-                        )}
-                    </section>
-                )}
+                {listContent}
+                <ItemPagination pagination={this.state.pagination} activePage={this.state.activePage} handlePageChange={this.handlePageChange} />
             </Container>
         )
     }

@@ -48,7 +48,7 @@ class ItemStore extends EventEmitter {
         });
     }
 
-    fetchItem(data) {
+    fetchItems(data) {
         let headers = {};
         if (AuthHelper.getToken()) {
             headers.Authorization = 'Bearer ' + AuthHelper.getToken();
@@ -57,9 +57,9 @@ class ItemStore extends EventEmitter {
         axios.get('/api/v1/items' + (queryString.length > 0 ? ('?' + queryString) : ''), {
             headers
         }).then((response) => {
-            this.emit(ItemConstants.ITEM_FETCH_SUCCESS, response.data);
+            this.emit(ItemConstants.ITEMS_FETCH_SUCCESS, response.data);
         }).catch((error) => {
-            this.emit(ItemConstants.ITEM_FETCH_FAILED, error.response);
+            this.emit(ItemConstants.ITEMS_FETCH_FAILED, error.response);
         });
     }
 
@@ -100,8 +100,8 @@ class ItemStore extends EventEmitter {
                 break;
             }
 
-            case ItemConstants.ITEM_FETCH: {
-                this.fetchItem(action.data);
+            case ItemConstants.ITEMS_FETCH: {
+                this.fetchItems(action.data);
                 break;
             }
 

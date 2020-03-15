@@ -1,14 +1,13 @@
 import React from 'react';
-import {Container, Breadcrumb, Card, Button, Dimmer, Loader, Grid, Label, Segment, Header, List, Divider} from 'semantic-ui-react';
-
+import ItemViewMainSection from './ItemViewMainSection.js';
+import ItemViewLeftMenu from './ItemViewLeftMenu.js';
+import {Container, Breadcrumb, Dimmer, Loader, Grid} from 'semantic-ui-react';
 import BreadcrumbHelper from '../../helpers/BreadcrumbHelper';
 import * as ItemConstants from "../../constants/ItemConstants";
 import ItemStore from "../../stores/ItemStore";
 import * as ItemActions from "../../actions/ItemActions";
 import Chat from '../Chat/Chat';
 import AuthHelper from '../../helpers/AuthHelper';
-import ImageGallery from 'react-image-gallery';
-import moment from 'moment';
 import * as ChatActions from "../../actions/ChatActions";
 import * as ChatConstants from "../../constants/ChatConstants";
 import ChatStore from "../../stores/ChatStore";
@@ -44,7 +43,7 @@ class ItemView extends React.Component {
                     daytime: ''
                 }
             },
-            loading: true,
+            isLoading: true,
             showChat: false,
             error: false
         };
@@ -53,7 +52,7 @@ class ItemView extends React.Component {
         this.handleItemViewFailed = this.handleItemViewFailed.bind(this);
         this.handleItemDeleteSuccess = this.handleItemDeleteSuccess.bind(this);
         this.handleItemDeleteFailed = this.handleItemDeleteFailed.bind(this);
-        this.onButtonClick = this.onButtonClick.bind(this);
+        this.openChat = this.openChat.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.onUpdateButtonClick = this.onUpdateButtonClick.bind(this);
         this.handleHomeChatRendered = this.handleHomeChatRendered.bind(this);
@@ -88,7 +87,7 @@ class ItemView extends React.Component {
     handleItemViewSuccess(data) {
         this.setState({
             item: data,
-            loading: false
+            isLoading: false
         });
     }
 
@@ -107,7 +106,7 @@ class ItemView extends React.Component {
         console.log(error);
     }
 
-    onButtonClick() {
+    openChat() {
         ChatActions.hideHomeChat();
         this.setState({
             showChat: true
@@ -119,28 +118,11 @@ class ItemView extends React.Component {
     }
 
     onUpdateButtonClick() {
-        this.props.history.push('/items/update/' + this.state.item.id);
+        this.props.history.push(`/items/update/${this.state.item.id}`);
     }
 
     render() {
-        let images = [];
-        let user_id = AuthHelper.getCredentials() ? AuthHelper.getCredentials().user_id : null;
-        let street = 'Not provided';
-
-        if (typeof this.state.item.photos !== "undefined" && this.state.item.photos.length > 0) {
-            images = this.state.item.photos.map((photo) => {
-                return {
-                    original: photo.path
-                }
-            });
-        }
-
-        if (typeof this.state.item.item_details.street !== "undefined" && this.state.item.item_details.street !== '' && this.state.item.item_details.street != null) {
-            street = this.state.item.item_details.street;
-            if (typeof this.state.item.item_details.street_number !== "undefined" && this.state.item.item_details.street_number !== '' && this.state.item.item_details.street_number != null) {
-                street += ' ' + this.state.item.item_details.street_number;
-            }
-        }
+        let item = this.state.item;
 
         if (this.state.error) {
             return (
@@ -148,83 +130,42 @@ class ItemView extends React.Component {
             )
         }
 
-        return (
-            <Container className={"base-container"}>
-                <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
-                {this.state.isLoading ? (
+        if (this.state.isLoading) {
+            return (
+                <Container className={"base-container"}>
                     <Dimmer active inverted>
                         <Loader size='massive'>Loading</Loader>
                     </Dimmer>
-                ) : (
-                    <Grid columns={2} divided>
-                        <Grid.Column width={5}>
-                            <ImageGallery
-                                items={images}
-                                showPlayButton={false}
-                                showIndex={true}
-                                showThumbnails={false}
-                            />
-                            {this.state.item.user.id !== user_id ? (
-                                <Card fluid>
-                                    <Card.Content>
-                                        <Label ribbon style={{marginBottom: '10px'}}>
-                                            User contact
-                                        </Label>
-                                        <Card.Header>{this.state.item.user.firstname} {this.state.item.user.lastname}</Card.Header>
-                                        <Card.Meta>Phone number: {this.state.item.user.phone_number}</Card.Meta>
-                                        <Card.Meta>Email: {this.state.item.user.email}</Card.Meta>
-                                    </Card.Content>
-                                    {user_id !== null ? (
-                                    <Card.Content extra>
-                                        <div className='ui two buttons'>
-                                            <Button basic color='green' onClick={() => this.onButtonClick()}>
-                                                Open chat
-                                            </Button>
-                                        </div>
-                                    </Card.Content>
-                                        ) : '' }
-                                </Card>
-                            ) : (
-                                <section>
-                                    <Divider horizontal />
-                                    <Button fluid color={'green'} onClick={() => this.onUpdateButtonClick()}>
-                                        Update item
-                                    </Button>
-                                    <Divider horizontal>Or</Divider>
-                                    <Button fluid color={'red'} onClick={() => this.onDeleteButtonClick()}>
-                                        Remove item
-                                    </Button>
-                                </section>
-                            )}
-                        </Grid.Column>
-                        <Grid.Column width={11}>
-                            <Segment color={'blue'}>
-                                <Header as='h1'>{this.state.item.type === ItemConstants.ITEM_MISSING ? 'Missing: ' : 'Found: '}{this.state.item.title}</Header>
-                                <Header sub disabled style={{marginBottom: '10px'}}>Created at: {moment.unix(this.state.item.created_at).format('LLL')}</Header>
-                                <Container textAlign={"justified"}>
-                                    <Header as='h5' dividing>
-                                        Description
-                                    </Header>
-                                    <p>
-                                        {this.state.item.description}
-                                    </p>
-                                </Container>
-                                <Header as='h5' dividing>
-                                    Address details
-                                </Header>
-                                <List>
-                                    <List.Item icon='flag' content={'Country: ' + ((this.state.item.item_details.country !== '' && this.state.item.item_details.country != null) ? this.state.item.item_details.country : 'Not provided')} />
-                                    <List.Item icon='point' content={'City: ' + this.state.item.item_details.city} />
-                                    <List.Item icon='road' content={'Street: ' + street} />
-                                    <List.Item icon='clock' content={(this.state.item.type === ItemConstants.ITEM_MISSING ? 'Lost around: ' : 'Found around: ') + moment.unix(this.state.item.item_details.daytime).format('LLL')} />
-                                </List>
-                            </Segment>
-                        </Grid.Column>
-                        {this.state.showChat && AuthHelper.isLoggedIn() ?
-                        <Chat firstname={this.state.item.user.firstname} lastname={this.state.item.user.lastname} user_id={this.state.item.user.id}/>
-                            : null }
-                    </Grid>
-                )}
+                </Container>
+            )
+        }
+
+        return (
+            <Container className={"base-container"}>
+                <Breadcrumb icon='right angle' sections={BreadcrumbHelper.generate(this.props.location.pathname)} />
+                <Grid columns={2} divided>
+                    <Grid.Column width={5}>
+                        <ItemViewLeftMenu
+                            user={item.user}
+                            photos={item.photos}
+                            onOpenChatButtonClick={this.openChat}
+                            onUpdateButtonClick={this.onUpdateButtonClick}
+                            onDeleteButtonClick={this.onDeleteButtonClick}
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={11}>
+                        <ItemViewMainSection
+                            itemType={item.type}
+                            title={item.title}
+                            createdAt={item.created_at}
+                            description={item.description}
+                            itemDetails={item.item_details}
+                        />
+                    </Grid.Column>
+                    {this.state.showChat && AuthHelper.isLoggedIn() ?
+                    <Chat firstname={item.user.firstname} lastname={item.user.lastname} user_id={item.user.id}/>
+                        : null }
+                </Grid>
             </Container>
         )
     }

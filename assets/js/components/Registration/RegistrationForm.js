@@ -1,11 +1,13 @@
 import React from 'react';
-import { Button, Segment, Container, Form } from 'semantic-ui-react';
+import TextInput from '../Input/TextInput.js';
+import { Button, Form } from 'semantic-ui-react';
 import AuthStore from '../../stores/AuthStore';
-import { Formik, Field } from 'formik';
+import { Formik } from 'formik';
 import Yup from 'yup';
 import {withRouter} from 'react-router-dom';
 import * as AuthActions from '../../actions/AuthActions';
 import * as AuthConstants from '../../constants/AuthConstants';
+import AuthHelper from '../../helpers/AuthHelper';
 
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -14,28 +16,50 @@ class RegistrationForm extends React.Component {
         this.state = {
             error: {
                 email: ''
+            },
+            userCredentials: {
+                _username: '',
+                _password: ''
             }
         };
 
         this.handleUserRegisterSuccess = this.handleUserRegisterSuccess.bind(this);
         this.handleUserRegisterFailed = this.handleUserRegisterFailed.bind(this);
+        this.handleLoginSuccess = this.handleLoginSuccess.bind(this);
+        this.handleLoginFailed = this.handleLoginFailed.bind(this);
     }
 
     componentWillMount() {
         AuthStore.on(AuthConstants.USER_REGISTER_SUCCESS, this.handleUserRegisterSuccess);
         AuthStore.on(AuthConstants.USER_REGISTER_FAILED, this.handleUserRegisterFailed);
+        AuthStore.on(AuthConstants.USER_LOGIN_SUCCESS, this.handleLoginSuccess);
+        AuthStore.on(AuthConstants.USER_LOGIN_FAILED, this.handleLoginFailed);
     }
 
     componentWillUnmount() {
         AuthStore.removeListener(AuthConstants.USER_REGISTER_SUCCESS, this.handleUserRegisterSuccess);
         AuthStore.removeListener(AuthConstants.USER_REGISTER_FAILED, this.handleUserRegisterFailed);
+        AuthStore.removeListener(AuthConstants.USER_LOGIN_SUCCESS, this.handleLoginSuccess);
+        AuthStore.removeListener(AuthConstants.USER_LOGIN_FAILED, this.handleLoginFailed);
     }
 
     handleUserRegisterSuccess() {
-        this.props.history.push("/");
+        AuthActions.userLogin(this.state.userCredentials);
     }
 
     handleUserRegisterFailed(error) {
+        this.setState({
+            error: error
+        });
+    }
+
+    handleLoginSuccess(data) {
+        AuthHelper.setToken(data.jwtToken);
+        AuthHelper.setRefreshToken(data.refreshToken);
+        this.props.history.push(this.props.location.pathname);
+    }
+
+    handleLoginFailed(error) {
         this.setState({
             error: error
         });
@@ -54,6 +78,12 @@ class RegistrationForm extends React.Component {
                 }}
 
                 onSubmit={(values, { setSubmitting }) => {
+                    this.setState({
+                        userCredentials: {
+                            _username: values.email,
+                            _password: values.password
+                        }
+                    });
                     AuthActions.userRegister({register_user: values});
                     setSubmitting(false);
                 }}
@@ -69,36 +99,12 @@ class RegistrationForm extends React.Component {
 
                 render={({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                     <Form onSubmit={handleSubmit}>
-                        <div className={"field " + (touched.firstname && errors.firstname && "error")}>
-                            <label>First name</label>
-                            <Field type="text" name="firstname" />
-                            {touched.firstname && errors.firstname && <div className="ui basic red pointing prompt label">{errors.firstname}</div>}
-                        </div>
-                        <div className={"field " + (touched.lastname && errors.lastname && "error")}>
-                            <label>Last name</label>
-                            <Field type="text" name="lastname" />
-                            {touched.lastname && errors.lastname && <div className="ui basic red pointing prompt label">{errors.lastname}</div>}
-                        </div>
-                        <div className={"field " + (touched.email && (errors.email || this.state.error.email) && "error")}>
-                            <label>Email</label>
-                            <Field type="email" name="email" />
-                            {(touched.email && errors.email && <div className="ui basic red pointing prompt label">{errors.email}</div>) || (this.state.error.email && <div className="ui basic red pointing prompt label">{this.state.error.email[0]}</div>)}
-                        </div>
-                        <div className={"field " + (errors.phone_number && "error")}>
-                            <label>Phone number</label>
-                            <Field type="text" name="phone_number" />
-                            {errors.phone_number && <div className="ui basic red pointing prompt label">{errors.phone_number}</div>}
-                        </div>
-                        <div className={"field " + (touched.password && errors.password && "error")}>
-                            <label>Password</label>
-                            <Field type="password" name="password" />
-                            {touched.password && errors.password && <div className="ui basic red pointing prompt label">{errors.password}</div>}
-                        </div>
-                        <div className={"field " + (touched.password_repeat && errors.password_repeat && "error")}>
-                            <label>Password repeat</label>
-                            <Field type="password" name="password_repeat" />
-                            {touched.password_repeat && errors.password_repeat && <div className="ui basic red pointing prompt label">{errors.password_repeat}</div>}
-                        </div>
+                        <TextInput type={"text"} name={"firstname"} touched={touched.firstname} errors={errors.firstname} label={"First name"} />
+                        <TextInput type={"text"} name={"lastname"} touched={touched.lastname} errors={errors.lastname} label={"Last name"} />
+                        <TextInput type={"email"} name={"email"} touched={touched.email} errors={errors.email} label={"Email"} />
+                        <TextInput type={"text"} name={"phone_number"} touched={touched.phone_number} errors={errors.phone_number} label={"Phone number"} />
+                        <TextInput type={"password"} name={"password"} touched={touched.password} errors={errors.password} label={"Password"} />
+                        <TextInput type={"password"} name={"password_repeat"} touched={touched.password_repeat} errors={errors.password_repeat} label={"Password repeat"} />
                         <Button type={"submit"} disabled={isSubmitting} primary>SignUp</Button>
                     </Form>
                 )}
