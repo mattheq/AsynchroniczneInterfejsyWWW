@@ -14,7 +14,7 @@ class RegistrationModal extends React.Component {
         this.handleUserRegisterSuccess = this.handleUserRegisterSuccess.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         AuthStore.on(AuthConstants.USER_LOGIN_SUCCESS, this.handleUserRegisterSuccess);
     }
 

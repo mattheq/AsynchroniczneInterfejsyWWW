@@ -24,7 +24,7 @@ class ItemForm extends React.Component {
         this.handleItemCreateFailed = this.handleItemCreateFailed.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         ItemStore.on(ItemConstants.ITEM_CREATE_SUCCESS, this.handleItemCreateSuccess);
         ItemStore.on(ItemConstants.ITEM_CREATE_FAILED, this.handleItemCreateFailed);
     }

@@ -30,17 +30,15 @@ class ItemList extends React.Component {
         this.updateList = this.updateList.bind(this);
     }
 
-    componentWillMount() {
-        ItemStore.on(ItemConstants.ITEMS_FETCH_SUCCESS, this.handleItemsFetchSuccess);
-        ItemStore.on(ItemConstants.ITEMS_FETCH_FAILED, this.handleItemsFetchFailed);
-    }
-
     componentWillUnmount() {
         ItemStore.removeListener(ItemConstants.ITEMS_FETCH_SUCCESS, this.handleItemsFetchSuccess);
         ItemStore.removeListener(ItemConstants.ITEMS_FETCH_FAILED, this.handleItemsFetchFailed);
     }
 
     componentDidMount() {
+        ItemStore.on(ItemConstants.ITEMS_FETCH_SUCCESS, this.handleItemsFetchSuccess);
+        ItemStore.on(ItemConstants.ITEMS_FETCH_FAILED, this.handleItemsFetchFailed);
+
         let searchString = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
         ItemActions.itemsFetch(searchString);
     }

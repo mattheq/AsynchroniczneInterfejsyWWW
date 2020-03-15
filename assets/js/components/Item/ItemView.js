@@ -59,14 +59,6 @@ class ItemView extends React.Component {
         this.handleHomeChatRendered = this.handleHomeChatRendered.bind(this);
     }
 
-    componentWillMount() {
-        ItemStore.on(ItemConstants.ITEM_VIEW_SUCCESS, this.handleItemViewSuccess);
-        ItemStore.on(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
-        ItemStore.on(ItemConstants.ITEM_DELETE_SUCCESS, this.handleItemDeleteSuccess);
-        ItemStore.on(ItemConstants.ITEM_DELETE_FAILED, this.handleItemDeleteFailed);
-        ChatStore.on(ChatConstants.HOME_CHAT_RENDERED, this.handleHomeChatRendered);
-    }
-
     componentWillUnmount() {
         ItemStore.removeListener(ItemConstants.ITEM_VIEW_SUCCESS, this.handleItemViewSuccess);
         ItemStore.removeListener(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
@@ -76,6 +68,12 @@ class ItemView extends React.Component {
     }
 
     componentDidMount() {
+        ItemStore.on(ItemConstants.ITEM_VIEW_SUCCESS, this.handleItemViewSuccess);
+        ItemStore.on(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
+        ItemStore.on(ItemConstants.ITEM_DELETE_SUCCESS, this.handleItemDeleteSuccess);
+        ItemStore.on(ItemConstants.ITEM_DELETE_FAILED, this.handleItemDeleteFailed);
+        ChatStore.on(ChatConstants.HOME_CHAT_RENDERED, this.handleHomeChatRendered);
+
         ItemActions.itemView(this.props.match.params.id);
     }
 

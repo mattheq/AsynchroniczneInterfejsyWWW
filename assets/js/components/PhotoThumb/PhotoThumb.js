@@ -11,7 +11,7 @@ class PhotoThumb extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!nextProps.photo) {
             return;
         }

@@ -24,7 +24,7 @@ class LoginForm extends React.Component {
         this.handleLoginFailed = this.handleLoginFailed.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         AuthStore.on(AuthConstants.USER_LOGIN_SUCCESS, this.handleLoginSuccess);
         AuthStore.on(AuthConstants.USER_LOGIN_FAILED, this.handleLoginFailed);
     }

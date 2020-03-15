@@ -31,7 +31,7 @@ class MessageDropdownList extends React.Component {
         this.handleViewItemChatRendered = this.handleViewItemChatRendered.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         MessageStore.on(MessageConstants.MESSAGE_CONVERSATIONS_FETCH_SUCCESS, this.handleMessageDropdownFetchSuccess);
         MessageStore.on(MessageConstants.MESSAGE_CONVERSATIONS_FETCH_FAILED, this.handleMessageDropdownFetchFailed);
         ChatStore.on(ChatConstants.VIEW_ITEM_CHAT_RENDERED, this.handleViewItemChatRendered);

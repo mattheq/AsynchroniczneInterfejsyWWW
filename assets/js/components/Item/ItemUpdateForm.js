@@ -41,13 +41,6 @@ class ItemUpdateForm extends React.Component {
         this.handleItemUpdateFailed = this.handleItemUpdateFailed.bind(this);
     }
 
-    componentWillMount() {
-        ItemStore.on(ItemConstants.ITEM_VIEW_SUCCESS, this.handleItemViewSuccess);
-        ItemStore.on(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
-        ItemStore.on(ItemConstants.ITEM_UPDATE_SUCCESS, this.handleItemUpdateSuccess);
-        ItemStore.on(ItemConstants.ITEM_UPDATE_FAILED, this.handleItemUpdateFailed);
-    }
-
     componentWillUnmount() {
         ItemStore.removeListener(ItemConstants.ITEM_VIEW_SUCCESS, this.handleItemViewSuccess);
         ItemStore.removeListener(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
@@ -56,6 +49,11 @@ class ItemUpdateForm extends React.Component {
     }
 
     componentDidMount() {
+        ItemStore.on(ItemConstants.ITEM_VIEW_SUCCESS, this.handleItemViewSuccess);
+        ItemStore.on(ItemConstants.ITEM_VIEW_FAILED, this.handleItemViewFailed);
+        ItemStore.on(ItemConstants.ITEM_UPDATE_SUCCESS, this.handleItemUpdateSuccess);
+        ItemStore.on(ItemConstants.ITEM_UPDATE_FAILED, this.handleItemUpdateFailed);
+
         ItemActions.itemView(this.props.match.params.id);
     }
 

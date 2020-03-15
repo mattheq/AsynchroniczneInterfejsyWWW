@@ -21,11 +21,6 @@ class Chat extends React.Component {
         this.setConversationHistory = this.setConversationHistory.bind(this);
     }
 
-    componentWillMount() {
-        MessageStore.on(MessageConstants.MESSAGE_RECEIVED_SUCCESS, this._sendMessage);
-        MessageStore.on(MessageConstants.MESSAGE_FETCH_SUCCESS, this.setConversationHistory);
-    }
-
     componentWillUnmount() {
         MessageStore.removeListener(MessageConstants.MESSAGE_RECEIVED_SUCCESS, this._sendMessage);
         MessageStore.removeListener(MessageConstants.MESSAGE_FETCH_SUCCESS, this.setConversationHistory);
@@ -33,6 +28,8 @@ class Chat extends React.Component {
     }
 
     componentDidMount() {
+        MessageStore.on(MessageConstants.MESSAGE_RECEIVED_SUCCESS, this._sendMessage);
+        MessageStore.on(MessageConstants.MESSAGE_FETCH_SUCCESS, this.setConversationHistory);
         MessageActions.fetchMessages(this.props.user_id);
     }
 

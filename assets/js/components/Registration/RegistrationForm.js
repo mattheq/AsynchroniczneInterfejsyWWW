@@ -31,7 +31,7 @@ class RegistrationForm extends React.Component {
         this.handleLoginFailed = this.handleLoginFailed.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         AuthStore.on(AuthConstants.USER_REGISTER_SUCCESS, this.handleUserRegisterSuccess);
         AuthStore.on(AuthConstants.USER_REGISTER_FAILED, this.handleUserRegisterFailed);
         AuthStore.on(AuthConstants.USER_LOGIN_SUCCESS, this.handleLoginSuccess);
