@@ -8,6 +8,7 @@ import {withRouter} from 'react-router-dom';
 import * as AuthActions from '../../actions/AuthActions';
 import * as AuthConstants from '../../constants/AuthConstants';
 import AuthHelper from '../../helpers/AuthHelper';
+import { toast } from 'react-toastify';
 
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -49,6 +50,7 @@ class RegistrationForm extends React.Component {
     }
 
     handleUserRegisterFailed(error) {
+        toast.error("Registration error");
         this.setState({
             error: error,
             isLoading: false
@@ -56,12 +58,14 @@ class RegistrationForm extends React.Component {
     }
 
     handleLoginSuccess(data) {
+        toast.success("You are logged in!");
         AuthHelper.setToken(data.jwtToken);
         AuthHelper.setRefreshToken(data.refreshToken);
         this.props.history.push(this.props.location.pathname);
     }
 
     handleLoginFailed(error) {
+        toast.error("Login error");
         this.setState({
             error: error,
             isLoading: false
@@ -105,7 +109,7 @@ class RegistrationForm extends React.Component {
                     <Form onSubmit={handleSubmit}>
                         <TextInput type={"text"} name={"firstname"} touched={touched.firstname} errors={errors.firstname} label={"First name"} />
                         <TextInput type={"text"} name={"lastname"} touched={touched.lastname} errors={errors.lastname} label={"Last name"} />
-                        <TextInput type={"email"} name={"email"} touched={touched.email} errors={errors.email} label={"Email"} />
+                        <TextInput type={"email"} name={"email"} touched={touched.email} errors={errors.email || this.state.error.email[0]} label={"Email"} />
                         <TextInput type={"text"} name={"phone_number"} touched={touched.phone_number} errors={errors.phone_number} label={"Phone number"} />
                         <TextInput type={"password"} name={"password"} touched={touched.password} errors={errors.password} label={"Password"} />
                         <TextInput type={"password"} name={"password_repeat"} touched={touched.password_repeat} errors={errors.password_repeat} label={"Password repeat"} />

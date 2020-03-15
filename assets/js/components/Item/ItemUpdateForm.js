@@ -10,6 +10,7 @@ import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 class ItemUpdateForm extends React.Component {
     constructor(props) {
@@ -70,10 +71,12 @@ class ItemUpdateForm extends React.Component {
     }
 
     handleItemUpdateSuccess(data) {
+        toast.success("Item has been updated!");
         this.props.history.push(`/items/view/${data.id}`);
     }
 
     handleItemUpdateFailed(error) {
+        toast.error("Item updation failed!");
         this.setState({
             isButtonLoading: false
         });

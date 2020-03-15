@@ -5,6 +5,7 @@ import 'semantic-ui-css/semantic.min.css';
 import './../../../css/custom.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-image-gallery/styles/css/image-gallery.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Footer from '../Layout/Footer';
 import HomePage from '../HomePage/HomePage';
@@ -22,7 +23,6 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import ContextProvider from "../ContextProvider/ContextProvider";
 
 class App extends React.Component {
-
     constructor(props) {
         super(props);
     }

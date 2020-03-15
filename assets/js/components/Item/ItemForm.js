@@ -11,6 +11,7 @@ import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -34,10 +35,12 @@ class ItemForm extends React.Component {
     }
 
     handleItemCreateSuccess(data) {
+        toast.success("Item has been created!");
         this.props.history.push(`/items/view/${data.id}`);
     }
 
     handleItemCreateFailed(error) {
+        toast.error("Item creation failed!");
         this.setState({
             isLoading: false
         });

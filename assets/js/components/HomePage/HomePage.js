@@ -3,7 +3,6 @@ import HomePageSearch from './HomePageSearch.js';
 import homeBackground from '../../../images/home_background.jpg';
 
 class HomePage extends React.Component {
-
     constructor(props) {
         super(props);
     }

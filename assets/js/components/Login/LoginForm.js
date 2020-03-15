@@ -7,7 +7,8 @@ import Yup from 'yup';
 import * as AuthActions from '../../actions/AuthActions';
 import * as AuthConstants from '../../constants/AuthConstants';
 import AuthHelper from '../../helpers/AuthHelper';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 class LoginForm extends React.Component {
 
@@ -34,6 +35,7 @@ class LoginForm extends React.Component {
     }
 
     handleLoginSuccess(data) {
+        toast.success("You are logged in!");
         this.setState({
             isLoading: false
         });
@@ -43,6 +45,7 @@ class LoginForm extends React.Component {
     }
 
     handleLoginFailed(error) {
+        toast.error("Login error");
         this.setState({
             error: error,
             isLoading: false

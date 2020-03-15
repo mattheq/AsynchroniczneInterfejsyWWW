@@ -12,6 +12,7 @@ import * as ChatActions from "../../actions/ChatActions";
 import * as ChatConstants from "../../constants/ChatConstants";
 import ChatStore from "../../stores/ChatStore";
 import PageNotFound from "../PageNotFound/PageNotFound";
+import { toast } from 'react-toastify';
 
 class ItemView extends React.Component {
     constructor(props) {
@@ -99,10 +100,12 @@ class ItemView extends React.Component {
     }
 
     handleItemDeleteSuccess(data) {
+        toast.success("Item has been deleted!");
         this.props.history.push('/items');
     }
 
     handleItemDeleteFailed(error) {
+        toast.error("Item deletion failed!");
         console.log(error);
     }
 
