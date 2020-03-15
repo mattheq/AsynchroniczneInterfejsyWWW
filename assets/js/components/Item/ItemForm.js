@@ -15,6 +15,9 @@ import moment from 'moment';
 class ItemForm extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isLoading: false
+        };
 
         this.handleItemCreateSuccess = this.handleItemCreateSuccess.bind(this);
         this.handleItemCreateFailed = this.handleItemCreateFailed.bind(this);
@@ -35,6 +38,9 @@ class ItemForm extends React.Component {
     }
 
     handleItemCreateFailed(error) {
+        this.setState({
+            isLoading: false
+        });
         console.log(error);
     }
 
@@ -66,6 +72,9 @@ class ItemForm extends React.Component {
                         validationSchema={validationSchema}
 
                         onSubmit={(values, { setSubmitting }) => {
+                            this.setState({
+                                isLoading: true
+                            });
                             ItemActions.itemCreate({create_item: values});
                             setSubmitting(false);
                         }}
@@ -82,7 +91,7 @@ class ItemForm extends React.Component {
                                 <PhotoInput name={"files"} files={values.files} errors={errors.files} setFieldValue={setFieldValue} label={"Photos"}/>
                                 <AdditionalInfoInput touched={touched} errors={errors} daytime={values.daytime} setFieldValue={setFieldValue} label={"Additional information"}/>
 
-                                <Button type={"submit"} disabled={isSubmitting} primary>Create</Button>
+                                <Button type={"submit"} loading={this.state.isLoading} disabled={isSubmitting} primary>Create</Button>
                             </Form>
                         )}
                     />

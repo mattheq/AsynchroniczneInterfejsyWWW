@@ -20,7 +20,8 @@ class RegistrationForm extends React.Component {
             userCredentials: {
                 _username: '',
                 _password: ''
-            }
+            },
+            isLoading: false
         };
 
         this.handleUserRegisterSuccess = this.handleUserRegisterSuccess.bind(this);
@@ -49,7 +50,8 @@ class RegistrationForm extends React.Component {
 
     handleUserRegisterFailed(error) {
         this.setState({
-            error: error
+            error: error,
+            isLoading: false
         });
     }
 
@@ -61,7 +63,8 @@ class RegistrationForm extends React.Component {
 
     handleLoginFailed(error) {
         this.setState({
-            error: error
+            error: error,
+            isLoading: false
         });
     }
 
@@ -82,7 +85,8 @@ class RegistrationForm extends React.Component {
                         userCredentials: {
                             _username: values.email,
                             _password: values.password
-                        }
+                        },
+                        isLoading: true
                     });
                     AuthActions.userRegister({register_user: values});
                     setSubmitting(false);
@@ -105,7 +109,7 @@ class RegistrationForm extends React.Component {
                         <TextInput type={"text"} name={"phone_number"} touched={touched.phone_number} errors={errors.phone_number} label={"Phone number"} />
                         <TextInput type={"password"} name={"password"} touched={touched.password} errors={errors.password} label={"Password"} />
                         <TextInput type={"password"} name={"password_repeat"} touched={touched.password_repeat} errors={errors.password_repeat} label={"Password repeat"} />
-                        <Button type={"submit"} disabled={isSubmitting} primary>SignUp</Button>
+                        <Button type={"submit"} loading={this.state.isLoading} disabled={isSubmitting} primary>SignUp</Button>
                     </Form>
                 )}
             />

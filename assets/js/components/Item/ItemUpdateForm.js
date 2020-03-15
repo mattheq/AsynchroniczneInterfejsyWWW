@@ -31,6 +31,7 @@ class ItemUpdateForm extends React.Component {
                 }
             },
             loading: true,
+            isButtonLoading: false
         };
 
         this.handleItemViewSuccess = this.handleItemViewSuccess.bind(this);
@@ -73,6 +74,9 @@ class ItemUpdateForm extends React.Component {
     }
 
     handleItemUpdateFailed(error) {
+        this.setState({
+            isButtonLoading: false
+        });
         console.log(error);
     }
 
@@ -120,6 +124,9 @@ class ItemUpdateForm extends React.Component {
                                         daytime: values.daytime.unix()
                                     }
                                 };
+                                this.setState({
+                                    isButtonLoading: true
+                                });
                                 ItemActions.itemUpdate(this.state.item.id, submitData);
                                 setSubmitting(false);
                             }}
@@ -136,7 +143,7 @@ class ItemUpdateForm extends React.Component {
                                     <RadioInput name={"type"} value={1} type={values.type} setFieldValue={setFieldValue} label={"Found"}/>
                                     <AdditionalInfoInput touched={touched} errors={errors} daytime={values.daytime} setFieldValue={setFieldValue} label={"Additional information"}/>
 
-                                    <Button type={"submit"} disabled={isSubmitting} primary>Update</Button>
+                                    <Button type={"submit"} loading={this.state.isButtonLoading} disabled={isSubmitting} primary>Update</Button>
                                 </Form>
                             )}
                         />

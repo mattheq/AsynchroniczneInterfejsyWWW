@@ -15,7 +15,8 @@ class LoginForm extends React.Component {
         super(props);
 
         this.state = {
-            error: ''
+            error: '',
+            isLoading: false
         };
 
         this.handleLoginSuccess = this.handleLoginSuccess.bind(this);
@@ -33,6 +34,9 @@ class LoginForm extends React.Component {
     }
 
     handleLoginSuccess(data) {
+        this.setState({
+            isLoading: false
+        });
         AuthHelper.setToken(data.jwtToken);
         AuthHelper.setRefreshToken(data.refreshToken);
         this.props.history.push(this.props.location.pathname);
@@ -40,7 +44,8 @@ class LoginForm extends React.Component {
 
     handleLoginFailed(error) {
         this.setState({
-            error: error
+            error: error,
+            isLoading: false
         });
     }
 
@@ -53,6 +58,9 @@ class LoginForm extends React.Component {
                 }}
 
                 onSubmit={(values, { setSubmitting }) => {
+                    this.setState({
+                        isLoading: true
+                    });
                     AuthActions.userLogin(values);
                     setSubmitting(false);
                 }}
@@ -73,7 +81,7 @@ class LoginForm extends React.Component {
                                 </div>
                             </div>
                         ) : '' }
-                        <Button type={"submit"} disabled={isSubmitting} primary>Login</Button>
+                        <Button type={"submit"} loading={this.state.isLoading} disabled={isSubmitting} primary>Login</Button>
                     </Form>
                 )}
             />
