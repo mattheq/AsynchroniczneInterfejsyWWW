@@ -1,9 +1,12 @@
 import React from 'react';
-import { Button, Divider } from 'semantic-ui-react';
+import { Button, Divider, Confirm } from 'semantic-ui-react';
 
 class ItemViewAuthorCard extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showConfirm: false
+        };
     }
 
     render() {
@@ -14,9 +17,15 @@ class ItemViewAuthorCard extends React.Component {
                     Update item
                 </Button>
                 <Divider horizontal>Or</Divider>
-                <Button fluid color={'red'} onClick={() => this.props.onDeleteButtonClick()}>
+                <Button fluid color={'red'} onClick={() => this.setState({showConfirm: true})}>
                     Remove item
                 </Button>
+                <Confirm
+                    open={this.state.showConfirm}
+                    onCancel={() => this.setState({ showConfirm: false })}
+                    onConfirm={() => this.props.onDeleteButtonClick()}
+                    size='mini'
+                />
             </section>
         );
     }
