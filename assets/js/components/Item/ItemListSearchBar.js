@@ -40,7 +40,7 @@ class ItemListSearchBar extends React.Component {
         let searchString = '';
         return (
             <Grid.Row>
-                <Grid.Column width={AuthHelper.isLoggedIn() ? 14 : 18}>
+                <Grid.Column width={AuthHelper.isLoggedIn() ? 14 : 16}>
                     <Input
                         value={this.state.searchValue}
                         onChange={this.handleChange}

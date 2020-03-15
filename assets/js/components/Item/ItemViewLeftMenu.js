@@ -24,12 +24,12 @@ class ItemViewLeftMenu extends React.Component {
 
         return (
             <section>
-                <ImageGallery
+                {images.length > 0 ? (<ImageGallery
                     items={images}
                     showPlayButton={false}
                     showIndex={true}
                     showThumbnails={false}
-                />
+                />) : ('')}
                 {this.props.user.id !== user_id ?
                 (
                     <ItemViewContactCard user={this.props.user} onOpenChatButtonClick={this.props.onOpenChatButtonClick} />
