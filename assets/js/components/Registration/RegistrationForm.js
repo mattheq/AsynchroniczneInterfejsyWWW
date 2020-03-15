@@ -7,6 +7,7 @@ import Yup from 'yup';
 import {withRouter} from 'react-router-dom';
 import * as AuthActions from '../../actions/AuthActions';
 import * as AuthConstants from '../../constants/AuthConstants';
+import AuthHelper from '../../helpers/AuthHelper';
 
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -15,28 +16,50 @@ class RegistrationForm extends React.Component {
         this.state = {
             error: {
                 email: ''
+            },
+            userCredentials: {
+                _username: '',
+                _password: ''
             }
         };
 
         this.handleUserRegisterSuccess = this.handleUserRegisterSuccess.bind(this);
         this.handleUserRegisterFailed = this.handleUserRegisterFailed.bind(this);
+        this.handleLoginSuccess = this.handleLoginSuccess.bind(this);
+        this.handleLoginFailed = this.handleLoginFailed.bind(this);
     }
 
     componentWillMount() {
         AuthStore.on(AuthConstants.USER_REGISTER_SUCCESS, this.handleUserRegisterSuccess);
         AuthStore.on(AuthConstants.USER_REGISTER_FAILED, this.handleUserRegisterFailed);
+        AuthStore.on(AuthConstants.USER_LOGIN_SUCCESS, this.handleLoginSuccess);
+        AuthStore.on(AuthConstants.USER_LOGIN_FAILED, this.handleLoginFailed);
     }
 
     componentWillUnmount() {
         AuthStore.removeListener(AuthConstants.USER_REGISTER_SUCCESS, this.handleUserRegisterSuccess);
         AuthStore.removeListener(AuthConstants.USER_REGISTER_FAILED, this.handleUserRegisterFailed);
+        AuthStore.removeListener(AuthConstants.USER_LOGIN_SUCCESS, this.handleLoginSuccess);
+        AuthStore.removeListener(AuthConstants.USER_LOGIN_FAILED, this.handleLoginFailed);
     }
 
     handleUserRegisterSuccess() {
-        this.props.history.push("/");
+        AuthActions.userLogin(this.state.userCredentials);
     }
 
     handleUserRegisterFailed(error) {
+        this.setState({
+            error: error
+        });
+    }
+
+    handleLoginSuccess(data) {
+        AuthHelper.setToken(data.jwtToken);
+        AuthHelper.setRefreshToken(data.refreshToken);
+        this.props.history.push(this.props.location.pathname);
+    }
+
+    handleLoginFailed(error) {
         this.setState({
             error: error
         });
@@ -55,6 +78,12 @@ class RegistrationForm extends React.Component {
                 }}
 
                 onSubmit={(values, { setSubmitting }) => {
+                    this.setState({
+                        userCredentials: {
+                            _username: values.email,
+                            _password: values.password
+                        }
+                    });
                     AuthActions.userRegister({register_user: values});
                     setSubmitting(false);
                 }}
