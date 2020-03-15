@@ -16,9 +16,10 @@ class ItemListSearchBar extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.location.search !== null) {
+        let searchQuery = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).search;
+        if (searchQuery != null) {
             this.setState({
-                searchValue: qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).search
+                searchValue: searchQuery
             });
         }
     }

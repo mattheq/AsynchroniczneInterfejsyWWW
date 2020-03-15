@@ -1,13 +1,13 @@
 import React from 'react';
 import ItemListSearchBar from './ItemListSearchBar.js';
+import ItemCard from './ItemCard.js';
+import ItemPagination from './ItemPagination.js';
 import ItemStore from '../../stores/ItemStore';
-import {Breadcrumb, Button, Card, Container, Dimmer, Icon, Image, Input, Pagination, Loader, Grid} from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
+import {Breadcrumb, Card, Container, Dimmer, Image, Loader, Grid} from 'semantic-ui-react';
 import * as ItemActions from '../../actions/ItemActions';
 import * as ItemConstants from '../../constants/ItemConstants';
 import defaultImage from '../../../images/white-image.png';
 import sadPepe from '../../../images/sad_pepe.svg';
-import PaginationHelper from '../../helpers/PaginationHelper';
 import BreadcrumbHelper from "../../helpers/BreadcrumbHelper";
 import qs from "qs";
 import AuthHelper from "../../helpers/AuthHelper";
@@ -70,7 +70,7 @@ class ItemList extends React.Component {
 
     updateList(searchValue) {
         ItemActions.itemsFetch({page: this.state.activePage, search: searchValue});
-        let searchQuerry = searchValue === '' ? '' : `?search=${searchValue}`
+        let searchQuerry = searchValue == null ? '' : `?search=${searchValue}`
         this.props.history.push({
             pathname: this.props.location.pathname,
             search: searchQuerry
@@ -78,9 +78,35 @@ class ItemList extends React.Component {
     }
 
     render() {
-        let queryParams = this.props.location.search;
-        let pagination = this.state.pagination;
         let user_id = AuthHelper.getCredentials() ? AuthHelper.getCredentials().user_id : null;
+        let listContent = <div align="center"><Image src={sadPepe} /><h1>Emptiness...</h1></div>;
+
+        if (this.state.isLoading) {
+            return (
+                <Container className={"base-container"}>
+                    <Dimmer active inverted>
+                        <Loader size='massive'>Loading</Loader>
+                    </Dimmer>
+                </Container>
+            )
+        }
+
+        if (this.state.items.length > 0) {
+            listContent =
+            <Card.Group itemsPerRow={4}>
+                {this.state.items.map((item) =>
+                    <ItemCard
+                        key={item.id}
+                        id={item.id}
+                        color={item.user.id === user_id ? 'blue' : 'grey'}
+                        image={item.photos.length !== 0 ? item.photos[0].path : defaultImage}
+                        title={item.title}
+                        type={ItemConstants.ITEM_MISSING === item.type ? 'Lost' : 'Found'}
+                        description={item.description}
+                    />
+                )}
+            </Card.Group>;
+        }
 
         return (
             <Container className={"base-container"}>
@@ -88,53 +114,8 @@ class ItemList extends React.Component {
                 <Grid columns={AuthHelper.isLoggedIn() ? 2 : 1}>
                     <ItemListSearchBar updateList={this.updateList}/>
                 </Grid>
-                {this.state.isLoading ? (
-                    <Dimmer active inverted>
-                        <Loader size='massive'>Loading</Loader>
-                    </Dimmer>
-                ) : (
-                    <section>
-                        {this.state.items.length > 0 ? (
-                            <section>
-                                <Card.Group itemsPerRow={4}>
-                                    {this.state.items.map((item) =>
-                                        <Card key={item.id} href={`/#/items/view/${item.id}`} color={item.user.id === user_id ? 'blue' : 'grey'}>
-                                            <Image src={item.photos.length !== 0 ? item.photos[0].path : defaultImage} height={166}/>
-                                            <Card.Content>
-                                                <Card.Header>
-                                                    {item.title}
-                                                </Card.Header>
-                                                <Card.Meta>
-                                                    {ItemConstants.ITEM_MISSING === item.type ? 'Missing' : 'Found'}
-                                                </Card.Meta>
-                                                <Card.Description>
-                                                    {item.description}
-                                                </Card.Description>
-                                            </Card.Content>
-                                        </Card>
-                                    )}
-                                </Card.Group>
-                                {typeof pagination === "undefined" || PaginationHelper.getTotalPages(pagination['hydra:last']) === 1 ? null : (
-                                    <Container textAlign='center'>
-                                        <Pagination
-                                            defaultActivePage={this.state.activePage}
-                                            totalPages={PaginationHelper.getTotalPages(pagination['hydra:last'])}
-                                            onPageChange={(e, data) => this.handlePageChange(e, data)}
-                                            firstItem={null}
-                                            lastItem={null}
-                                            pointing
-                                            secondary/>
-                                    </Container>
-                                )}
-                            </section>
-                        ) : (
-                            <div align="center">
-                                <Image src={sadPepe} />
-                                <h1>Emptiness...</h1>
-                            </div>
-                        )}
-                    </section>
-                )}
+                {listContent}
+                <ItemPagination pagination={this.state.pagination} activePage={this.state.activePage} handlePageChange={this.handlePageChange} />
             </Container>
         )
     }
