@@ -7,7 +7,7 @@ at University of Technology in Częstochowa
 * [About](#about)
 * [Built With](#built-with)
 * [Setup](#setup)
-* [Demo](#demo)
+* [Demo](#demo-💻)
 
 # About
 
