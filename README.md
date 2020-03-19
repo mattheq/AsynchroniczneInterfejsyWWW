@@ -7,7 +7,7 @@ at University of Technology in Częstochowa
 * [About](#about)
 * [Built With](#built-with)
 * [Setup](#setup)
-* [Demo](#demo-💻)
+* [Demo](#demo)
 
 # About
 
@@ -88,8 +88,8 @@ yarn encore dev --watch
 ```
 Visit [localhost:8000/#/](http://localhost:8000/#/) to open app 👇
 ![Homepage](homepage.png)
-# Demo 💻
-## Working demo can be found here: https://app-lost-and-found.herokuapp.com/
+# Demo
+## 💻 Working demo can be found here: https://app-lost-and-found.herokuapp.com/
 
 ## 📢 **Chat doesn't work in this demo, because heroku doesn't allow to have the websockets server running alongside a PHP app - [link](https://help.heroku.com/8R7OO0ZV/can-i-run-a-websockets-server-using-php-on-heroku)** ⚠️
 
